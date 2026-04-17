@@ -1,0 +1,144 @@
+╔════════════════════════════════════════════════════════════════════╗
+║           GPRB - GESTIÓN INMOBILIARIA INDUSTRIAL                  ║
+║                         GUÍA DE USO                                ║
+╚════════════════════════════════════════════════════════════════════╝
+
+✅ ARCHIVOS CREADOS:
+───────────────────────────────────────────────────────────────────
+✓ index.html          - Página principal completa (1 archivo único)
+✓ css/styles.css      - Estilos con animaciones AI y efectos
+✓ js/app.js           - Lógica completa de la aplicación
+✓ img/logo-gprb.svg   - Logo GPRB en SVG
+✓ README.md           - Documentación completa
+
+📂 ESTRUCTURA:
+───────────────────────────────────────────────────────────────────
+Nueva carpeta (6)/
+  ├── index.html
+  ├── README.md
+  ├── INSTRUCCIONES.txt (este archivo)
+  ├── css/
+  │   └── styles.css
+  ├── js/
+  │   └── app.js
+  └── img/
+      └── logo-gprb.svg
+
+🚀 CÓMO USAR:
+───────────────────────────────────────────────────────────────────
+1. Abre "index.html" en tu navegador web
+2. ¡La web es 100% funcional sin servidor!
+3. Los datos se guardan localmente en el navegador
+
+🔐 ACCESO ADMIN:
+───────────────────────────────────────────────────────────────────
+Usuario: admin
+Contraseña: admin123
+
+💾 FUNCIONALIDADES ADMIN:
+───────────────────────────────────────────────────────────────────
+✓ Editar portada (imagen, título, subtítulo del slider)
+✓ Agregar propiedades con 18+ campos industriales
+✓ Editar propiedades existentes
+✓ Eliminar propiedades con confirmación
+✓ Búsqueda y filtros de propiedades
+✓ Tabla administrativa de gestión
+
+📋 CAMPOS DE PROPIEDAD INCLUIDOS:
+───────────────────────────────────────────────────────────────────
+Información Básica:
+  - Título, categoría (8 tipos), operación (venta/arriendo)
+  - Precio en CLP, ubicación, dirección
+
+Características Principales:
+  - Superficie total y útil (m²)
+  - Baños, estacionamientos, tipo de bodega
+  - Número de privados, antigüedad
+  - Altura, soporte de piso
+  - Remolques de plataforma
+  - Precio por m², código de propiedad
+
+Multimedia:
+  - Imagen principal
+  - Galería de imágenes (URLs)
+
+Servicios:
+  - Acceso a internet
+  - Agua corriente
+  - Gas natural
+  - Luz eléctrica
+  - Línea telefónica
+
+Comodidades y Equipamiento:
+  - Aire acondicionado
+  - Báscula
+  - Calefacción
+  - Generador eléctrico
+  - Sistema de ventilación
+
+Seguridad:
+  - Alarma
+  - Sistema contra incendio
+  - Conserjería
+
+Contacto:
+  - Nombre agente, teléfono, email
+
+🎨 CARACTERÍSTICAS VISUALES:
+───────────────────────────────────────────────────────────────────
+✓ Slider interactivo automático en portada
+✓ Animaciones fluidas (fadeUp, slideIn, pulse, float, glow)
+✓ Gradientes dinámicos en botones y tarjetas
+✓ Transformaciones 3D en hover
+✓ Diseño responsive (mobile, tablet, desktop)
+✓ Color scheme profesional GPRB (verde #00c896)
+✓ Iconos Font Awesome integrados
+
+📱 FUNCIONALIDADES PÚBLICAS:
+───────────────────────────────────────────────────────────────────
+✓ Ver todas las propiedades con detalles
+✓ Buscar por texto, ubicación, tipo
+✓ Filtrar por: categoría, operación, rango de precio
+✓ Ver detalles completos de cada propiedad
+✓ Galería de imágenes por propiedad
+✓ Información de contacto del agente
+✓ Formulario de contacto
+
+🌐 CONTACTO GPRB:
+───────────────────────────────────────────────────────────────────
+📍 Dirección: Antonio Bellet 193, Of.1210, Providencia
+📞 Teléfono: +56 9 4170 9793
+📧 Email: giancarlo@gprb.cl
+
+💡 NOTAS IMPORTANTES:
+───────────────────────────────────────────────────────────────────
+• Sin servidor: 100% JavaScript vanilla + localStorage
+• Los datos se guardan en el navegador (no requiere API)
+• Compatible con todos los navegadores modernos
+• Responsive y optimizado para móvil
+• Efectos AI integrados: animaciones, gradientes, transiciones
+• Slider editable desde dashboard sin tocar código
+
+🔄 DATOS DE EJEMPLO:
+───────────────────────────────────────────────────────────────────
+La web viene con 3 propiedades de ejemplo:
+1. Bodega Industrial Providencia - Venta
+2. Oficina Ejecutiva Centro - Arriendo
+3. Terreno Industrial Zona Franca - Venta
+
+Puedes editar, eliminar o agregar más desde el admin.
+
+🎯 PRÓXIMAS MEJORAS SUGERIDAS:
+───────────────────────────────────────────────────────────────────
+• Integración con backend (Node.js, Python, etc.)
+• Base de datos real (PostgreSQL, MongoDB)
+• Subida de imágenes real
+• Autenticación OAuth
+• Integración con Google Maps
+• Sistema de favoritos
+• PWA (Progressive Web App)
+• Reportes y analíticas
+
+═══════════════════════════════════════════════════════════════════
+¡GPRB - Gestión Inmobiliaria Industrial está listo para usar! 🚀
+═══════════════════════════════════════════════════════════════════
