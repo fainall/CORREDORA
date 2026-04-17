@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPRB - Gestión Inmobiliaria Industrial | Bodegas, Oficinas y Terrenos en Chile</title>
+  <meta name="description" content="GPRB - Especialistas en gestión inmobiliaria industrial en Chile. Venta y arriendo de bodegas, oficinas, terrenos industriales y parcelas. Cobertura nacional.">
+  <meta name="keywords" content="inmobiliaria industrial, bodegas Chile, oficinas, terrenos industriales, GPRB, Santiago, Providencia">
+  <meta name="author" content="GPRB">
+  <meta name="theme-color" content="#00c896">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="GPRB - Gestión Inmobiliaria Industrial">
+  <meta property="og:description" content="Especialistas en propiedades industriales en Chile. Bodegas, oficinas, terrenos y más.">
+  <meta property="og:image" content="img/logo-gprb.svg">
+  <meta property="og:locale" content="es_CL">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="img/logo-gprb.svg">
+  <link rel="apple-touch-icon" href="img/logo-gprb.svg">
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="topbar-left">
+        <a href="mailto:giancarlo@gprb.cl"><i class="fas fa-envelope"></i> giancarlo@gprb.cl</a>
+        <a href="tel:+56941709793"><i class="fas fa-phone"></i> +56 9 4170 9793</a>
+      </div>
+      <div class="topbar-right">
+        <a href="#" onclick="showPage('login'); return false;" class="topbar-auth"><i class="fas fa-user"></i> Admin</a>
+        <div class="topbar-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#" class="logo" onclick="showPage('home'); return false;" aria-label="GPRB - Ir al inicio">
+        <img src="img/logo-gprb.svg" alt="Logo GPRB" class="logo-img">
+        <div class="logo-text">
+          <span class="logo-name">GPRB</span>
+          <span class="logo-tag">INDUSTRIAL SOLUTIONS</span>
+        </div>
+      </a>
+      <nav class="nav" id="mainNav">
+        <a href="#" onclick="showPage('home')" class="nav-link active">Inicio</a>
+        <a href="#" onclick="showPage('listings')" class="nav-link">Propiedades</a>
+        <a href="#" onclick="showPage('contact')" class="nav-link">Contacto</a>
+        <a href="#" onclick="showPage('dashboard')" class="nav-link nav-dashboard" id="navDashboard" style="display:none;">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="#" onclick="logout()" class="nav-link nav-logout" id="navLogout" style="display:none;">
+          <i class="fas fa-sign-out-alt"></i> Salir
+        </a>
+      </nav>
+      <div class="header-actions">
+        <a href="#" onclick="showPage('login'); return false;" class="header-icon-btn" id="navAdmin" aria-label="Admin"><i class="fas fa-user-shield"></i></a>
+        <button type="button" class="header-icon-btn" onclick="toggleHeaderSearch()" aria-label="Buscar"><i class="fas fa-search"></i></button>
+        <a href="#" onclick="showPage('dashboard'); return false;" class="btn-add-property" id="btnAddProp" style="display:none;">
+          <i class="fas fa-plus"></i> Agregar Propiedad
+        </a>
+      </div>
+      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav" aria-label="Menú móvil">
+    <a href="#" onclick="showPage('home'); return false;"><i class="fas fa-home"></i> Inicio</a>
+    <a href="#" onclick="showPage('listings'); return false;"><i class="fas fa-building"></i> Propiedades</a>
+    <a href="#" onclick="showPage('contact'); return false;"><i class="fas fa-envelope"></i> Contacto</a>
+    <a href="#" onclick="showPage('login'); return false;" id="mobileAdmin"><i class="fas fa-lock"></i> Admin</a>
+    <a href="#" onclick="showPage('dashboard'); return false;" id="mobileDashboard" style="display:none;"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="#" onclick="logout(); closeMenu(); return false;" id="mobileLogout" style="display:none;"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    <a href="tel:+56941709793" class="mobile-nav-cta"><i class="fas fa-phone"></i> +56 9 4170 9793</a>
+  </div>
+
+  <!-- ==================== PAGE: HOME ==================== -->
+  <section id="page-home">
+    <!-- Mega Hero -->
+    <div class="mega-hero" id="heroSlider" role="region" aria-label="Portada GPRB">
+      <div class="slider-slides" id="sliderSlidesContainer"></div>
+
+      <!-- Slider controls -->
+      <button type="button" class="slider-btn slider-prev" onclick="changeSlide(-1)" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
+      <button type="button" class="slider-btn slider-next" onclick="changeSlide(1)" aria-label="Siguiente slide"><i class="fas fa-chevron-right"></i></button>
+
+      <!-- Rotating Video Badge -->
+      <a href="#" onclick="showPage('contact'); return false;" class="video-badge" aria-label="Ver intro">
+        <svg viewBox="0 0 100 100" class="video-badge-text">
+          <defs>
+            <path id="circlePath" d="M 50,50 m -36,0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0"/>
+          </defs>
+          <text><textPath href="#circlePath">GPRB • INDUSTRIAL • CHILE • GPRB • INDUSTRIAL • CHILE • </textPath></text>
+        </svg>
+        <span class="video-badge-play"><i class="fas fa-play"></i></span>
+      </a>
+
+      <!-- Foreground Content -->
+      <div class="mega-hero-fg">
+        <div class="container">
+          <!-- Title + Search Card sit here but title is rendered in slider; this is the search card overlay -->
+          <div class="hero-search-card">
+            <div class="search-tabs" role="tablist">
+              <button type="button" class="search-tab active" data-tab="all" onclick="switchSearchTab('all')">General</button>
+              <button type="button" class="search-tab" data-tab="Bodega" onclick="switchSearchTab('Bodega')">Bodega</button>
+              <button type="button" class="search-tab" data-tab="Oficina" onclick="switchSearchTab('Oficina')">Oficina</button>
+              <button type="button" class="search-tab" data-tab="Industrial" onclick="switchSearchTab('Industrial')">Industrial</button>
+            </div>
+            <div class="search-fields">
+              <div class="search-field">
+                <label>Palabra Clave</label>
+                <input type="text" id="heroSearch" placeholder="¿Qué buscas?">
+              </div>
+              <div class="search-field">
+                <label>Categoría</label>
+                <div class="select-wrap">
+                  <select id="heroType">
+                    <option value="">Seleccionar categoría</option>
+                    <option value="Departamento">Departamento</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Oficina">Oficina</option>
+                    <option value="Bodega">Bodega</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Local">Local</option>
+                    <option value="Parcela">Parcela</option>
+                    <option value="Terreno">Terreno</option>
+                  </select>
+                </div>
+              </div>
+              <div class="search-field">
+                <label>Ubicación</label>
+                <div class="input-with-icon">
+                  <input type="text" id="heroLocation" placeholder="Ciudad o comuna">
+                  <i class="fas fa-crosshairs"></i>
+                </div>
+              </div>
+              <div class="search-field search-field-auto">
+                <label>&nbsp;</label>
+                <div class="search-actions">
+                  <select id="heroStatus" class="search-more">
+                    <option value="">Todas</option>
+                    <option value="Venta">Venta</option>
+                    <option value="Arriendo">Arriendo</option>
+                  </select>
+                  <button type="button" class="btn-search-primary" onclick="performHeroSearch()">
+                    <i class="fas fa-search"></i> Buscar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Pills -->
+          <div class="quick-pills">
+            <button type="button" class="quick-pill" onclick="filterByType('Industrial')">Industrial <i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="quick-pill" onclick="filterByType('Bodega')">Bodegas <i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="quick-pill" onclick="filterByStatus('Venta')">Ventas <i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="quick-pill" onclick="filterByStatus('Arriendo')">Arriendos <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slider dots at bottom -->
+      <div class="slider-dots" id="sliderDots" role="tablist"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="container stats-inner">
+        <div class="stat-item">
+          <i class="fas fa-building"></i>
+          <div><strong id="statTotal">0</strong><span>Propiedades</span></div>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-industry"></i>
+          <div><strong>Especializacion</strong><span>Industrial</span></div>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div><strong>Cobertura</strong><span>Nacional</span></div>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-phone"></i>
+          <div><strong>Contacto</strong><span>+56 9 4170 9793</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Properties -->
+    <div class="section section-dark">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <span class="section-tag">Propiedades Premium</span>
+          <h2>Destacadas <span class="accent">de la Semana</span></h2>
+          <p>Las mejores opciones en gestión inmobiliaria industrial</p>
+        </div>
+        <div class="properties-grid" id="featuredGrid"></div>
+        <div class="section-footer">
+          <button class="btn btn-hero" onclick="showPage('listings')">Ver Todas las Propiedades <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="section section-darker">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <span class="section-tag">Propiedades por Tipo</span>
+          <h2>Explora <span class="accent">Categorías</span></h2>
+          <p>Encuentra la propiedad que necesitas</p>
+        </div>
+        <div class="categories-grid">
+          <div class="category-card" onclick="filterByType('Departamento')">
+            <div class="cat-icon"><i class="fas fa-building"></i></div>
+            <div class="cat-body">
+              <h3>Departamentos</h3>
+              <span class="cat-count"><span id="catDep">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card" onclick="filterByType('Casa')">
+            <div class="cat-icon"><i class="fas fa-home"></i></div>
+            <div class="cat-body">
+              <h3>Casas</h3>
+              <span class="cat-count"><span id="catCasa">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card" onclick="filterByType('Oficina')">
+            <div class="cat-icon"><i class="fas fa-briefcase"></i></div>
+            <div class="cat-body">
+              <h3>Oficinas</h3>
+              <span class="cat-count"><span id="catOfi">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card category-card-featured" onclick="filterByType('Bodega')">
+            <div class="cat-icon"><i class="fas fa-warehouse"></i></div>
+            <div class="cat-body">
+              <h3>Bodegas</h3>
+              <span class="cat-count"><span id="catBod">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card category-card-featured" onclick="filterByType('Industrial')">
+            <div class="cat-icon"><i class="fas fa-industry"></i></div>
+            <div class="cat-body">
+              <h3>Industriales</h3>
+              <span class="cat-count"><span id="catInd">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card" onclick="filterByType('Local')">
+            <div class="cat-icon"><i class="fas fa-store"></i></div>
+            <div class="cat-body">
+              <h3>Locales</h3>
+              <span class="cat-count"><span id="catLoc">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card" onclick="filterByType('Parcela')">
+            <div class="cat-icon"><i class="fas fa-square"></i></div>
+            <div class="cat-body">
+              <h3>Parcelas</h3>
+              <span class="cat-count"><span id="catPar">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+          <div class="category-card" onclick="filterByType('Terreno')">
+            <div class="cat-icon"><i class="fas fa-mountain"></i></div>
+            <div class="cat-body">
+              <h3>Terrenos</h3>
+              <span class="cat-count"><span id="catTer">0</span> propiedades</span>
+            </div>
+            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="section section-about">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-media">
+            <div class="about-image-main">
+              <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80" alt="Gestión Inmobiliaria Industrial GPRB" loading="lazy">
+            </div>
+            <div class="about-image-sub">
+              <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&q=80" alt="Oficinas industriales" loading="lazy">
+            </div>
+            <div class="about-experience-badge">
+              <span class="experience-number">10<sup>+</sup></span>
+              <span class="experience-label">Años de<br>Experiencia</span>
+            </div>
+            <div class="about-floating-chip">
+              <div class="chip-icon"><i class="fas fa-award"></i></div>
+              <div>
+                <strong>Calidad Certificada</strong>
+                <span>Propiedades verificadas</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-content">
+            <span class="section-tag">Sobre Nosotros</span>
+            <h2>Expertos en <span class="accent">Gestión Industrial</span></h2>
+            <p class="about-intro">Somos especialistas en gestión inmobiliaria industrial con amplia experiencia en el mercado chileno. Conectamos propietarios e inversionistas con las mejores propiedades industriales disponibles a nivel nacional.</p>
+            <div class="about-features">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-shield-check"></i></div>
+                <div>
+                  <h4>Propiedades Verificadas</h4>
+                  <p>Cada inmueble pasa por estrictos controles de calidad y documentación legal.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-user-tie"></i></div>
+                <div>
+                  <h4>Asesoramiento Profesional</h4>
+                  <p>Equipo especializado en el sector industrial con conocimiento del mercado.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                <div>
+                  <h4>Transacciones Seguras</h4>
+                  <p>Procesos transparentes y soporte completo en cada operación.</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div>
+                  <h4>Cobertura Nacional</h4>
+                  <p>Presencia en las principales zonas industriales de Chile.</p>
+                </div>
+              </div>
+            </div>
+            <div class="about-cta">
+              <button type="button" class="btn-hero" onclick="showPage('listings')"><i class="fas fa-search"></i> Ver Propiedades</button>
+              <a href="tel:+56941709793" class="about-call">
+                <span class="call-icon"><i class="fas fa-phone"></i></span>
+                <div>
+                  <span class="call-label">Llámanos ahora</span>
+                  <strong>+56 9 4170 9793</strong>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Contact Section -->
+    <div class="section section-contact-cta">
+      <div class="container">
+        <div class="contact-cta-grid">
+          <div class="contact-cta-info">
+            <span class="section-tag">Hablemos</span>
+            <h2>¿Listo para encontrar tu <span class="accent">propiedad ideal</span>?</h2>
+            <p>Déjanos tus datos y un asesor GPRB te contactará dentro de las próximas 24 horas para asesorarte personalmente.</p>
+
+            <div class="contact-methods">
+              <a href="tel:+56941709793" class="contact-method">
+                <span class="cm-icon"><i class="fas fa-phone"></i></span>
+                <div>
+                  <span class="cm-label">Teléfono</span>
+                  <strong>+56 9 4170 9793</strong>
+                </div>
+              </a>
+              <a href="mailto:giancarlo@gprb.cl" class="contact-method">
+                <span class="cm-icon"><i class="fas fa-envelope"></i></span>
+                <div>
+                  <span class="cm-label">Email</span>
+                  <strong>giancarlo@gprb.cl</strong>
+                </div>
+              </a>
+              <div class="contact-method">
+                <span class="cm-icon"><i class="fas fa-map-marker-alt"></i></span>
+                <div>
+                  <span class="cm-label">Oficina</span>
+                  <strong>Antonio Bellet 193, Of.1210<br>Providencia, Santiago</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-cta-form">
+            <div class="cc-form-header">
+              <h3><i class="fas fa-paper-plane"></i> Envíanos un mensaje</h3>
+              <p>Respondemos en menos de 24 horas</p>
+            </div>
+            <form class="cc-form" onsubmit="handleContact(event)">
+              <div class="cc-row">
+                <div class="cc-field">
+                  <label>Nombre completo *</label>
+                  <input type="text" required placeholder="Tu nombre">
+                </div>
+                <div class="cc-field">
+                  <label>Teléfono</label>
+                  <input type="tel" placeholder="+56 9 ...">
+                </div>
+              </div>
+              <div class="cc-field">
+                <label>Email *</label>
+                <input type="email" required placeholder="tu@email.com">
+              </div>
+              <div class="cc-row">
+                <div class="cc-field">
+                  <label>Categoría de interés</label>
+                  <select>
+                    <option value="">Seleccionar...</option>
+                    <option>Bodega</option>
+                    <option>Oficina</option>
+                    <option>Industrial</option>
+                    <option>Terreno</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+                <div class="cc-field">
+                  <label>Operación</label>
+                  <select>
+                    <option value="">Seleccionar...</option>
+                    <option>Venta</option>
+                    <option>Arriendo</option>
+                  </select>
+                </div>
+              </div>
+              <div class="cc-field">
+                <label>Mensaje *</label>
+                <textarea rows="4" required placeholder="Cuéntanos qué tipo de propiedad buscas..."></textarea>
+              </div>
+              <label class="cc-checkbox">
+                <input type="checkbox" required>
+                <span>Acepto recibir comunicaciones y la política de privacidad de GPRB.</span>
+              </label>
+              <button type="submit" class="btn-hero cc-submit">
+                <i class="fas fa-paper-plane"></i> Enviar Mensaje
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: LISTINGS ==================== -->
+  <section id="page-listings" class="page-hidden">
+    <div class="page-banner">
+      <h1>Propiedades Industriales</h1>
+      <p>Catalogo completo de inmuebles</p>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="filters-bar">
+          <div class="filter-group">
+            <select id="filterType" onchange="applyFilters()">
+              <option value="">Todas las categorias</option>
+              <option value="Departamento">Departamento</option>
+              <option value="Casa">Casa</option>
+              <option value="Oficina">Oficina</option>
+              <option value="Bodega">Bodega</option>
+              <option value="Industrial">Industrial</option>
+              <option value="Local">Local</option>
+              <option value="Parcela">Parcela</option>
+              <option value="Terreno">Terreno</option>
+            </select>
+            <select id="filterStatus" onchange="applyFilters()">
+              <option value="">Todas</option>
+              <option value="Venta">Venta</option>
+              <option value="Arriendo">Arriendo</option>
+            </select>
+            <select id="filterPrice" onchange="applyFilters()">
+              <option value="">Cualquier precio</option>
+              <option value="0-10000000">Hasta $10M</option>
+              <option value="10000000-50000000">$10M - $50M</option>
+              <option value="50000000-100000000">$50M - $100M</option>
+              <option value="100000000-500000000">$100M - $500M</option>
+              <option value="500000000-9999999999">Mas de $500M</option>
+            </select>
+            <input type="text" id="filterSearch" placeholder="Buscar..." oninput="applyFilters()">
+          </div>
+          <div class="filter-results"><span id="resultsCount">0 resultados</span></div>
+        </div>
+        <div class="properties-grid" id="listingsGrid"></div>
+        <div id="noResults" class="no-results" style="display:none;">
+          <i class="fas fa-search"></i>
+          <h3>No se encontraron propiedades</h3>
+          <p>Intenta con otros filtros de busqueda</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: DETAIL ==================== -->
+  <section id="page-detail" class="page-hidden">
+    <div id="propertyDetail"></div>
+  </section>
+
+  <!-- ==================== PAGE: CONTACT ==================== -->
+  <section id="page-contact" class="page-hidden">
+    <div class="page-banner">
+      <h1>Contacto</h1>
+      <p>Estamos aqui para ayudarte</p>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info-cards">
+            <div class="contact-info-card">
+              <i class="fas fa-map-marker-alt"></i>
+              <h4>Direccion</h4>
+              <p>Antonio Bellet 193<br>Of.1210, Providencia<br>Santiago, Chile</p>
+            </div>
+            <div class="contact-info-card">
+              <i class="fas fa-phone"></i>
+              <h4>Telefono</h4>
+              <p><a href="tel:+56941709793">+56 9 4170 9793</a></p>
+            </div>
+            <div class="contact-info-card">
+              <i class="fas fa-envelope"></i>
+              <h4>Email</h4>
+              <p><a href="mailto:giancarlo@gprb.cl">giancarlo@gprb.cl</a></p>
+            </div>
+          </div>
+          <div class="form-section">
+            <h3><i class="fas fa-paper-plane"></i> Enviar Mensaje</h3>
+            <form class="contact-form" onsubmit="handleContact(event)">
+              <input type="text" placeholder="Tu nombre" required>
+              <input type="email" placeholder="Tu email" required>
+              <input type="tel" placeholder="Tu telefono">
+              <textarea rows="5" placeholder="Tu mensaje..." required></textarea>
+              <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                <i class="fas fa-paper-plane"></i> Enviar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: ADMIN LOGIN ==================== -->
+  <section id="page-login" class="page-hidden">
+    <div class="page-banner banner-admin">
+      <h1><i class="fas fa-shield-alt"></i> Area Administrativa</h1>
+      <p>Acceso para administradores GPRB</p>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="login-wrapper">
+          <div class="login-card">
+            <div class="login-header">
+              <div class="login-avatar"><i class="fas fa-user-shield"></i></div>
+              <h2>Iniciar Sesion</h2>
+              <p>Ingresa tus credenciales</p>
+            </div>
+            <form onsubmit="handleLogin(event)" id="loginForm">
+              <div class="form-group">
+                <label><i class="fas fa-user"></i> Usuario</label>
+                <input type="text" id="loginUser" required placeholder="Usuario" autocomplete="username">
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-lock"></i> Contrasena</label>
+                <div class="password-field">
+                  <input type="password" id="loginPass" required placeholder="Contrasena" autocomplete="current-password">
+                  <button type="button" class="toggle-pass" onclick="togglePassword()"><i class="fas fa-eye" id="eyeIcon"></i></button>
+                </div>
+              </div>
+              <div id="loginError" class="login-error" style="display:none;"><i class="fas fa-exclamation-circle"></i> <span id="loginErrorMsg"></span></div>
+              <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+                <i class="fas fa-sign-in-alt"></i> Ingresar
+              </button>
+            </form>
+            <div class="login-hint">
+              <i class="fas fa-info-circle"></i> admin / admin123
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== PAGE: DASHBOARD ==================== -->
+  <section id="page-dashboard" class="page-hidden">
+    <div class="page-banner banner-admin">
+      <h1><i class="fas fa-tachometer-alt"></i> Dashboard Administrativo</h1>
+      <p>Gestiona todas las propiedades del sistema</p>
+    </div>
+    <div class="section">
+      <div class="container">
+        <!-- Dashboard Stats -->
+        <div class="dash-stats">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon"><i class="fas fa-building"></i></div>
+            <div class="dash-stat-info"><span id="dashTotal">0</span><label>Total</label></div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon sale"><i class="fas fa-dollar-sign"></i></div>
+            <div class="dash-stat-info"><span id="dashSale">0</span><label>Venta</label></div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon rent"><i class="fas fa-key"></i></div>
+            <div class="dash-stat-info"><span id="dashRent">0</span><label>Arriendo</label></div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon types"><i class="fas fa-th-large"></i></div>
+            <div class="dash-stat-info"><span id="dashTypes">0</span><label>Categorias</label></div>
+          </div>
+        </div>
+
+        <!-- Dashboard Tabs -->
+        <div class="dash-tabs">
+          <button class="dash-tab active" onclick="switchDashTab('sliderEdit')">
+            <i class="fas fa-images"></i> Portada
+          </button>
+          <button class="dash-tab" onclick="switchDashTab('list')">
+            <i class="fas fa-list"></i> Propiedades
+          </button>
+          <button class="dash-tab" onclick="switchDashTab('add')">
+            <i class="fas fa-plus-circle"></i> Agregar
+          </button>
+        </div>
+
+        <!-- Tab: Edit Slider -->
+        <div class="dash-panel" id="dashPanelSliderEdit">
+          <div class="slider-editor">
+            <h3><i class="fas fa-edit"></i> Editor de Portada</h3>
+            <p>Personaliza los 3 slides del slider de la página de inicio</p>
+
+            <div id="sliderEditorForms"></div>
+
+            <button class="btn btn-primary btn-lg" onclick="saveSliderChanges()">
+              <i class="fas fa-save"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab: Property List -->
+        <div class="dash-panel" id="dashPanelList" style="display:none;">
+          <div class="dash-toolbar">
+            <input type="text" id="dashSearch" placeholder="Buscar..." oninput="renderDashList()">
+            <select id="dashFilter" onchange="renderDashList()">
+              <option value="">Todas</option>
+              <option value="Venta">Venta</option>
+              <option value="Arriendo">Arriendo</option>
+            </select>
+          </div>
+          <div class="dash-table-wrapper">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Img</th>
+                  <th>Titulo</th>
+                  <th>Categoria</th>
+                  <th>Tipo</th>
+                  <th>Precio</th>
+                  <th>Ubicacion</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="dashTableBody"></tbody>
+            </table>
+          </div>
+          <div id="dashNoResults" class="no-results" style="display:none;">
+            <i class="fas fa-inbox"></i>
+            <h3>No hay propiedades</h3>
+          </div>
+        </div>
+
+        <!-- Tab: Add / Edit Property -->
+        <div class="dash-panel" id="dashPanelAdd" style="display:none;">
+          <form class="property-form" id="propertyForm" onsubmit="saveProperty(event)">
+            <input type="hidden" name="editId" id="editId" value="">
+
+            <div class="form-section">
+              <h3><i class="fas fa-info-circle"></i> Informacion Basica</h3>
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label>Titulo *</label>
+                  <input type="text" id="fTitle" required placeholder="Ej: Bodega Industrial en Providencia">
+                </div>
+                <div class="form-group">
+                  <label>Categoria *</label>
+                  <select id="fType" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="Departamento">Departamento</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Oficina">Oficina</option>
+                    <option value="Bodega">Bodega</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Local">Local</option>
+                    <option value="Parcela">Parcela</option>
+                    <option value="Terreno">Terreno</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Operacion *</label>
+                  <select id="fStatus" required>
+                    <option value="Venta">Venta</option>
+                    <option value="Arriendo">Arriendo</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Precio (CLP) *</label>
+                  <input type="number" id="fPrice" required min="0" placeholder="50000000">
+                </div>
+                <div class="form-group">
+                  <label>Ubicacion *</label>
+                  <input type="text" id="fLocation" required placeholder="Ej: Providencia, Santiago">
+                </div>
+                <div class="form-group">
+                  <label>Direccion</label>
+                  <input type="text" id="fAddress" placeholder="Calle, número, comuna">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-ruler-combined"></i> Caracteristicas Principales</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Superficie Total (m²) *</label>
+                  <input type="number" id="fArea" required min="0" placeholder="500">
+                </div>
+                <div class="form-group">
+                  <label>Superficie Util (m²) *</label>
+                  <input type="number" id="fUsableArea" required min="0" placeholder="450">
+                </div>
+                <div class="form-group">
+                  <label>Banos *</label>
+                  <input type="number" id="fBathrooms" required min="0" placeholder="2">
+                </div>
+                <div class="form-group">
+                  <label>Estacionamientos *</label>
+                  <input type="number" id="fParking" required min="0" placeholder="4">
+                </div>
+                <div class="form-group">
+                  <label>Tipo de Bodega</label>
+                  <select id="fWarehouseType">
+                    <option value="">Seleccionar...</option>
+                    <option value="Abierta">Abierta</option>
+                    <option value="Cerrada">Cerrada</option>
+                    <option value="Mixta">Mixta</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Numero de Privados</label>
+                  <input type="number" id="fPrivateRooms" min="0" placeholder="0">
+                </div>
+                <div class="form-group">
+                  <label>Antiguedad (anos)</label>
+                  <input type="number" id="fAge" min="0" placeholder="10">
+                </div>
+                <div class="form-group">
+                  <label>Altura (m)</label>
+                  <input type="number" id="fHeight" step="0.1" placeholder="5">
+                </div>
+                <div class="form-group">
+                  <label>Soporte de Piso (t/m²)</label>
+                  <input type="number" id="fFloorSupport" step="0.1" placeholder="5">
+                </div>
+                <div class="form-group">
+                  <label>Remolques de Plataforma</label>
+                  <input type="text" id="fPlatforms" placeholder="Si/No">
+                </div>
+                <div class="form-group">
+                  <label>Precio por m²</label>
+                  <input type="number" id="fPricePerM2" step="1000" placeholder="100000">
+                </div>
+                <div class="form-group">
+                  <label>Codigo de Propiedad</label>
+                  <input type="text" id="fPropertyCode" placeholder="CODE-001">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-image"></i> Imagenes</h3>
+              <div class="form-group full-width">
+                <label>URL Imagen Principal *</label>
+                <input type="url" id="fImage" required placeholder="https://...">
+              </div>
+              <div class="form-group full-width">
+                <label>Imagenes Adicionales (URLs separadas por coma)</label>
+                <input type="text" id="fGallery" placeholder="https://img1.jpg, https://img2.jpg">
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-align-left"></i> Descripcion</h3>
+              <div class="form-group full-width">
+                <label>Descripcion *</label>
+                <textarea id="fDesc" required rows="5" placeholder="Detalla las principales caracteristicas..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-plug"></i> Servicios</h3>
+              <div class="amenities-grid">
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Internet"> <span>Acceso a Internet</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Agua"> <span>Agua Corriente</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Gas"> <span>Gas Natural</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Luz"> <span>Luz Electrica</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Telefonica"> <span>Linea Telefonica</span></label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-cogs"></i> Comodidades y Equipamiento</h3>
+              <div class="amenities-grid">
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Aire"> <span>Aire Acondicionado</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Bascula"> <span>Bascula</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Calefaccion"> <span>Calefaccion</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Generador"> <span>Generador Electrico</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Ventilacion"> <span>Sistema de Ventilacion</span></label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-lock"></i> Seguridad</h3>
+              <div class="amenities-grid">
+                <label class="checkbox-label"><input type="checkbox" name="security" value="Alarma"> <span>Alarma</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="Incendio"> <span>Sistema Contra Incendio</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="Conserjeria"> <span>Conserjeria</span></label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-user"></i> Contacto</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Nombre Agente</label>
+                  <input type="text" id="fAgent" placeholder="Nombre completo">
+                </div>
+                <div class="form-group">
+                  <label>Telefono</label>
+                  <input type="tel" id="fPhone" placeholder="+56 9 ...">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" id="fEmail" placeholder="correo@ejemplo.com">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg" id="formSubmitBtn">
+                <i class="fas fa-plus-circle"></i> Publicar
+              </button>
+              <button type="button" class="btn btn-outline btn-lg" onclick="resetForm()">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Confirm Modal -->
+  <div class="modal-overlay" id="confirmModal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+      <h3 id="confirmTitle">Confirmar accion</h3>
+      <p id="confirmMsg">¿Estas seguro?</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-danger" id="confirmBtn" onclick="confirmAction()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMsg">Accion exitosa</span>
+  </div>
+
+  <!-- Floating Action Buttons -->
+  <a href="https://wa.me/56941709793?text=Hola%20GPRB,%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20sus%20propiedades" target="_blank" rel="noopener" class="float-btn float-whatsapp" aria-label="Contactar por WhatsApp" title="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <button type="button" class="float-btn float-top" id="backToTop" onclick="scrollToTop()" aria-label="Volver arriba" title="Volver arriba">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3><i class="fas fa-industry"></i> GPRB</h3>
+          <p>Especialistas en gestion inmobiliaria industrial con cobertura nacional en Chile.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Enlaces</h4>
+          <a href="#" onclick="showPage('home')">Inicio</a>
+          <a href="#" onclick="showPage('listings')">Propiedades</a>
+          <a href="#" onclick="showPage('contact')">Contacto</a>
+        </div>
+        <div class="footer-col">
+          <h4>Categorias</h4>
+          <a href="#" onclick="filterByType('Bodega')">Bodegas</a>
+          <a href="#" onclick="filterByType('Industrial')">Industriales</a>
+          <a href="#" onclick="filterByType('Oficina')">Oficinas</a>
+          <a href="#" onclick="filterByType('Terreno')">Terrenos</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <p><i class="fas fa-map-marker-alt"></i> Antonio Bellet 193, Of.1210</p>
+          <p><i class="fas fa-phone"></i> +56 9 4170 9793</p>
+          <p><i class="fas fa-envelope"></i> giancarlo@gprb.cl</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 GPRB. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
