@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-      - export DEPLOYPATH=/home2/mantecio/corredora.opusdigital.cl
-          - /bin/cp -R $TRAVIS_BUILD_DIR/. $DEPLOYPATH/
+    - export DEPLOYPATH=/home2/mantecio/corredora.opusdigital.cl
+    - /bin/cp -R $TRAVIS_BUILD_DIR/. $DEPLOYPATH/
