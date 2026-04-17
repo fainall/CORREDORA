@@ -125,37 +125,33 @@ const defaultSlider = {
   ]
 };
 
-function getProperties() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProperties));
-    return defaultProperties;
-  }
-  return JSON.parse(stored);
-}
+// ===== In-memory caches (hidratados desde Supabase en init) =====
+let _propertiesCache = [...defaultProperties];
+let _sliderCache = JSON.parse(JSON.stringify(defaultSlider));
 
-function saveProperties(props) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(props));
+function getProperties() {
+  return _propertiesCache;
 }
 
 function getSliderData() {
-  const stored = localStorage.getItem(SLIDER_KEY);
-  if (!stored) return defaultSlider;
-  try {
-    const parsed = JSON.parse(stored);
-    // Backwards compat: old format was a single slide object
-    if (parsed && !parsed.slides && parsed.bgUrl) {
-      return { slides: [{ tag: 'Bienvenido a GPRB', ...parsed }, ...defaultSlider.slides.slice(1)] };
-    }
-    if (parsed && parsed.slides && parsed.slides.length > 0) return parsed;
-    return defaultSlider;
-  } catch (e) {
-    return defaultSlider;
-  }
+  return _sliderCache;
 }
 
-function saveSliderData(data) {
-  localStorage.setItem(SLIDER_KEY, JSON.stringify(data));
+// Loaders async: llaman a Supabase y actualizan el cache + re-render
+async function loadPropertiesFromSB() {
+  if (!window.GPRB_SB) return;
+  try {
+    const rows = await window.GPRB_SB.getProperties();
+    if (rows && rows.length > 0) _propertiesCache = rows;
+  } catch (e) { console.warn('loadPropertiesFromSB', e); }
+}
+
+async function loadSliderFromSB() {
+  if (!window.GPRB_SB) return;
+  try {
+    const rows = await window.GPRB_SB.getSlides();
+    if (rows && rows.length > 0) _sliderCache = { slides: rows };
+  } catch (e) { console.warn('loadSliderFromSB', e); }
 }
 
 // ===================== FAVORITES =====================
@@ -185,30 +181,36 @@ function isFavorite(id) {
   return getFavorites().includes(id);
 }
 
-// ===================== AUTH =====================
+// ===================== AUTH (Supabase) =====================
+let _currentUser = null;
+
 function isLoggedIn() {
-  return sessionStorage.getItem(AUTH_KEY) === 'true';
+  return !!_currentUser;
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
-  const user = document.getElementById('loginUser').value.trim();
+  const userInput = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value;
+  // El campo "user" ahora acepta email. Si no lleva @, asumir email admin legado.
+  const email = userInput.includes('@') ? userInput : `${userInput}@gprb.cl`;
 
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    sessionStorage.setItem(AUTH_KEY, 'true');
+  try {
+    const { user } = await window.GPRB_SB.signIn(email, pass);
+    _currentUser = user;
     updateAuthUI();
     showPage('dashboard');
-    showToast('Bienvenido, Administrador');
+    showToast('Bienvenido, ' + (user.email || 'Administrador'));
     document.getElementById('loginForm').reset();
     hideLoginError();
-  } else {
-    showLoginError('Usuario o contrasena incorrectos');
+  } catch (err) {
+    showLoginError(err.message || 'Credenciales incorrectas');
   }
 }
 
-function logout() {
-  sessionStorage.removeItem(AUTH_KEY);
+async function logout() {
+  try { await window.GPRB_SB.signOut(); } catch (e) { console.warn(e); }
+  _currentUser = null;
   updateAuthUI();
   showPage('home');
   showToast('Sesion cerrada correctamente');
@@ -366,17 +368,22 @@ function renderSliderEditor() {
   `).join('');
 }
 
-function saveSliderChanges() {
+async function saveSliderChanges() {
   const data = getSliderData();
   document.querySelectorAll('[data-slide-idx]').forEach(input => {
     const idx = parseInt(input.dataset.slideIdx);
     const field = input.dataset.slideField;
     if (data.slides[idx]) data.slides[idx][field] = input.value.trim();
   });
-  saveSliderData(data);
-  renderSlider();
-  startSliderAutoplay();
-  showToast('Portada actualizada correctamente');
+  try {
+    const saved = await window.GPRB_SB.saveSlides(data.slides);
+    _sliderCache = { slides: saved };
+    renderSlider();
+    startSliderAutoplay();
+    showToast('Portada actualizada correctamente');
+  } catch (e) {
+    showToast('Error al guardar: ' + (e.message || 'intenta de nuevo'));
+  }
 }
 
 // ===================== NAVIGATION =====================
@@ -718,24 +725,25 @@ function saveProperty(e) {
     agentEmail: document.getElementById('fEmail').value.trim()
   };
 
-  if (editId) {
-    const idx = props.findIndex(p => p.id === parseInt(editId));
-    if (idx !== -1) {
-      propData.id = parseInt(editId);
-      props[idx] = propData;
-      showToast('Propiedad actualizada exitosamente');
+  (async () => {
+    try {
+      if (editId) {
+        const updated = await window.GPRB_SB.updateProperty(parseInt(editId), propData);
+        const idx = _propertiesCache.findIndex(p => p.id === updated.id);
+        if (idx !== -1) _propertiesCache[idx] = updated;
+        showToast('Propiedad actualizada exitosamente');
+      } else {
+        const created = await window.GPRB_SB.createProperty(propData);
+        _propertiesCache.unshift(created);
+        showToast('Propiedad publicada exitosamente');
+      }
+      resetForm();
+      switchDashTab('list');
+      renderDashboard();
+    } catch (err) {
+      showToast('Error al guardar: ' + (err.message || 'intenta de nuevo'));
     }
-  } else {
-    const newId = props.length > 0 ? Math.max(...props.map(p => p.id)) + 1 : 1;
-    propData.id = newId;
-    props.unshift(propData);
-    showToast('Propiedad publicada exitosamente');
-  }
-
-  saveProperties(props);
-  resetForm();
-  switchDashTab('list');
-  renderDashboard();
+  })();
 }
 
 function editProperty(id) {
@@ -801,12 +809,16 @@ function confirmDelete(id) {
   document.getElementById('confirmModal').style.display = 'flex';
 }
 
-function confirmAction() {
+async function confirmAction() {
   if (pendingDeleteId !== null) {
-    let props = getProperties();
-    props = props.filter(p => p.id !== pendingDeleteId);
-    saveProperties(props);
-    showToast('Propiedad eliminada');
+    const id = pendingDeleteId;
+    try {
+      await window.GPRB_SB.deleteProperty(id);
+      _propertiesCache = _propertiesCache.filter(p => p.id !== id);
+      showToast('Propiedad eliminada');
+    } catch (err) {
+      showToast('Error al eliminar: ' + (err.message || 'intenta de nuevo'));
+    }
     pendingDeleteId = null;
     closeModal();
     renderDashboard();
@@ -893,10 +905,36 @@ function performHeroSearch() {
 }
 
 // ===================== CONTACT =====================
-function handleContact(e) {
+async function handleContact(e) {
   e.preventDefault();
-  showToast('Mensaje enviado correctamente');
-  e.target.reset();
+  const form = e.target;
+  const fd = new FormData(form);
+  // Intenta obtener campos tanto por name como por id
+  const get = (k, altId) => {
+    const v = fd.get(k);
+    if (v != null && String(v).trim() !== '') return String(v).trim();
+    const el = altId ? document.getElementById(altId) : null;
+    return el ? el.value.trim() : '';
+  };
+  const msg = {
+    name: get('name', 'ccName') || get('cName'),
+    email: get('email', 'ccEmail') || get('cEmail'),
+    phone: get('phone', 'ccPhone') || get('cPhone'),
+    category: get('category', 'ccCategory'),
+    operation: get('operation', 'ccOperation'),
+    message: get('message', 'ccMessage') || get('cMessage')
+  };
+  if (!msg.name || !msg.email) {
+    showToast('Completa nombre y email');
+    return;
+  }
+  try {
+    await window.GPRB_SB.sendContactMessage(msg);
+    showToast('Mensaje enviado correctamente. Te contactaremos pronto.');
+    form.reset();
+  } catch (err) {
+    showToast('Error al enviar: ' + (err.message || 'intenta de nuevo'));
+  }
 }
 
 // ===================== TOAST =====================
@@ -935,11 +973,36 @@ function imgFallback(img) {
 }
 
 // ===================== INIT =====================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Hidratar sesión de Supabase (si había login previo persistido)
+  if (window.GPRB_SB) {
+    try {
+      const session = await window.GPRB_SB.getSession();
+      _currentUser = session?.user || null;
+    } catch (e) { console.warn('getSession', e); }
+
+    // Escuchar cambios de auth (token refresh, logout en otra pestaña, etc.)
+    window.GPRB_SB.onAuthChange((user) => {
+      _currentUser = user;
+      updateAuthUI();
+    });
+  }
+
   updateAuthUI();
+  initBackToTop();
+
+  // 2. Render inmediato con datos por defecto para no bloquear UI
   initSlider();
   renderHome();
-  initBackToTop();
+
+  // 3. Cargar datos reales desde Supabase y re-renderizar
+  if (window.GPRB_SB) {
+    await Promise.all([loadPropertiesFromSB(), loadSliderFromSB()]);
+    renderSlider();
+    if (currentPage === 'home') renderHome();
+    if (currentPage === 'listings') renderListings();
+    if (currentPage === 'dashboard') renderDashboard();
+  }
 });
 
 document.addEventListener('click', (e) => {
