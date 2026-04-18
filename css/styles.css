@@ -1566,6 +1566,10 @@ body > #page-listings .card-feature { color: var(--text-light); }
 #page-dashboard {
   background: #0d1b2a;
 }
+#page-dashboard .page-banner {
+  margin-top: 0;
+  padding-top: 120px;
+}
 #page-dashboard .section {
   background: linear-gradient(180deg, #0d1b2a 0%, #111f30 100%);
   min-height: 70vh;
