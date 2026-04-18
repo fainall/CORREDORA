@@ -5,7 +5,7 @@
 const SUPABASE_URL = 'https://kydvxkiqcjztrcetunaj.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_LK4SQOUBg1FtwNQ23znzHw_wNy7hFnd';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, storageKey: 'gprb-auth' }
 });
 
@@ -113,7 +113,7 @@ function slideToDb(s) {
 // PROPERTIES
 // ============================================================
 async function sbGetProperties() {
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('properties')
     .select('*')
     .order('created_at', { ascending: false });
@@ -123,7 +123,7 @@ async function sbGetProperties() {
 
 async function sbCreateProperty(prop) {
   const payload = propToDb(prop);
-  const { data, error } = await supabase.from('properties').insert(payload).select().single();
+  const { data, error } = await sbClient.from('properties').insert(payload).select().single();
   if (error) { console.error('sbCreateProperty', error); throw error; }
   return propFromDb(data);
 }
@@ -131,7 +131,7 @@ async function sbCreateProperty(prop) {
 async function sbUpdateProperty(id, prop) {
   const payload = propToDb(prop);
   payload.updated_at = new Date().toISOString();
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('properties')
     .update(payload)
     .eq('id', id)
@@ -142,7 +142,7 @@ async function sbUpdateProperty(id, prop) {
 }
 
 async function sbDeleteProperty(id) {
-  const { error } = await supabase.from('properties').delete().eq('id', id);
+  const { error } = await sbClient.from('properties').delete().eq('id', id);
   if (error) { console.error('sbDeleteProperty', error); throw error; }
   return true;
 }
@@ -151,7 +151,7 @@ async function sbDeleteProperty(id) {
 // SLIDES
 // ============================================================
 async function sbGetSlides() {
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('slider_slides')
     .select('*')
     .eq('active', true)
@@ -162,12 +162,12 @@ async function sbGetSlides() {
 
 async function sbSaveSlides(slides) {
   // Reemplazo completo: borrar todas y re-insertar
-  const { error: delErr } = await supabase.from('slider_slides').delete().neq('id', 0);
+  const { error: delErr } = await sbClient.from('slider_slides').delete().neq('id', 0);
   if (delErr) { console.error('sbSaveSlides delete', delErr); throw delErr; }
   const payload = (slides || []).map((s, i) => ({ ...slideToDb(s), sort_order: i + 1 }));
   payload.forEach(p => { delete p.id; });
   if (payload.length === 0) return [];
-  const { data, error } = await supabase.from('slider_slides').insert(payload).select();
+  const { data, error } = await sbClient.from('slider_slides').insert(payload).select();
   if (error) { console.error('sbSaveSlides insert', error); throw error; }
   return (data || []).map(slideFromDb);
 }
@@ -176,7 +176,7 @@ async function sbSaveSlides(slides) {
 // CONTACT MESSAGES
 // ============================================================
 async function sbSendContactMessage(msg) {
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('contact_messages')
     .insert(msg)
     .select()
@@ -186,7 +186,7 @@ async function sbSendContactMessage(msg) {
 }
 
 async function sbGetContactMessages() {
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('contact_messages')
     .select('*')
     .order('created_at', { ascending: false });
@@ -198,28 +198,28 @@ async function sbGetContactMessages() {
 // AUTH
 // ============================================================
 async function sbSignIn(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
   if (error) throw error;
   return data;
 }
 
 async function sbSignOut() {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await sbClient.auth.signOut();
   if (error) throw error;
 }
 
 async function sbGetSession() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sbClient.auth.getSession();
   return session;
 }
 
 function sbOnAuthChange(cb) {
-  return supabase.auth.onAuthStateChange((event, session) => cb(session?.user || null, event));
+  return sbClient.auth.onAuthStateChange((event, session) => cb(session?.user || null, event));
 }
 
 // Exponer globalmente
 window.GPRB_SB = {
-  supabase,
+  client: sbClient,
   getProperties: sbGetProperties,
   createProperty: sbCreateProperty,
   updateProperty: sbUpdateProperty,
