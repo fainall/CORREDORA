@@ -568,6 +568,25 @@ function renderDetail(propId) {
                 ${prop.amenities.map(a => `<div class="detail-amenity"><i class="fas fa-check-circle"></i> ${escapeHtml(a)}</div>`).join('')}
               </div>
             </div>` : ''}
+
+            ${(prop.address || prop.location) ? `
+            <div class="detail-section detail-section-map">
+              <h2><i class="fas fa-map-marker-alt"></i> Ubicación</h2>
+              <div class="detail-map-address">
+                <i class="fas fa-building"></i>
+                <span>${escapeHtml(prop.address || prop.location)}, ${escapeHtml(prop.location || '')}</span>
+                <a href="https://www.google.com/maps/search/${encodeURIComponent((prop.address || '') + ' ' + (prop.location || ''))}" target="_blank" rel="noopener" class="btn-map-ext">
+                  <i class="fas fa-external-link-alt"></i> Ver en Google Maps
+                </a>
+              </div>
+              <div class="detail-map-wrap">
+                <iframe
+                  src="https://maps.google.com/maps?q=${encodeURIComponent((prop.address || prop.location) + ', Chile')}&output=embed&z=15&hl=es"
+                  width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade" title="Mapa ubicación propiedad">
+                </iframe>
+              </div>
+            </div>` : ''}
           </div>
           <div class="detail-sidebar">
             ${prop.agentName ? `
