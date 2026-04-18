@@ -1854,7 +1854,16 @@ body > #page-listings .card-feature { color: var(--text-light); }
 
   /* Slider controls reposition */
   .slider-btn { display: none; }
-  .slider-dots { bottom: auto; top: 380px; }
+  .slider-dots {
+    position: absolute;
+    top: auto;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 6px;
+  }
+  .slider-dot { width: 7px; height: 7px; }
+  .slider-dot.active { width: 18px; }
 
   /* Stats */
   .stats-bar { padding: 24px 0; }
@@ -1987,6 +1996,7 @@ body > #page-listings .card-feature { color: var(--text-light); }
   .hero-content p { font-size: 0.92rem; }
   .slider-slides { height: 300px; }
   .hero-content { padding: 24px 0 20px; min-height: 300px; }
+  .slider-dots { bottom: 10px; }
   .slider-dots { top: 340px; }
 
   .categories-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -2035,7 +2045,7 @@ body > #page-listings .card-feature { color: var(--text-light); }
   .hero-content { min-height: 320px; padding: 24px 0; }
   .hero-content h1 { font-size: 1.8rem; }
   .hero-content p { font-size: 0.88rem; margin-bottom: 14px; }
-  .slider-dots { top: 290px; }
+  .slider-dots { top: auto; bottom: 8px; }
 }
 
 /* ---------- Touch device optimizations ---------- */
