@@ -595,9 +595,14 @@ function renderDetail(propId) {
               <div class="agent-info">
                 <div class="agent-avatar">${agentInitial}</div>
                 <h4>${escapeHtml(prop.agentName)}</h4>
-                ${prop.agentPhone ? `<div class="agent-detail"><i class="fas fa-phone"></i> ${escapeHtml(prop.agentPhone)}</div>` : ''}
-                ${prop.agentEmail ? `<div class="agent-detail"><i class="fas fa-envelope"></i> ${escapeHtml(prop.agentEmail)}</div>` : ''}
+                ${prop.agentPhone ? `<div class="agent-detail"><i class="fas fa-phone"></i> <a href="tel:${escapeAttr(prop.agentPhone)}">${escapeHtml(prop.agentPhone)}</a></div>` : ''}
+                ${prop.agentEmail ? `<div class="agent-detail"><i class="fas fa-envelope"></i> <a href="mailto:${escapeAttr(prop.agentEmail)}">${escapeHtml(prop.agentEmail)}</a></div>` : ''}
               </div>
+              ${prop.agentPhone ? `
+              <a href="https://wa.me/${cleanPhone(prop.agentPhone)}?text=${encodeURIComponent('Hola, me interesa la propiedad: ' + prop.title + (prop.propertyCode ? ' (Código: ' + prop.propertyCode + ')' : '') + '. ¿Podría darme más información?')}"
+                 target="_blank" rel="noopener" class="btn-whatsapp-detail">
+                <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+              </a>` : ''}
             </div>` : ''}
             <div class="sidebar-card">
               <h3>Contactar</h3>
@@ -605,11 +610,18 @@ function renderDetail(propId) {
                 <input type="text" placeholder="Tu nombre" required>
                 <input type="email" placeholder="Tu email" required>
                 <input type="tel" placeholder="Tu telefono">
-                <textarea rows="4" placeholder="Consulta..."></textarea>
+                <textarea rows="4" placeholder="Consulta sobre: ${escapeAttr(prop.title)}..."></textarea>
                 <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
-                  <i class="fas fa-paper-plane"></i> Enviar
+                  <i class="fas fa-paper-plane"></i> Enviar Consulta
                 </button>
               </form>
+              <div class="sidebar-wa-divider">
+                <span>o contáctanos directo</span>
+              </div>
+              <a href="https://wa.me/${cleanPhone(prop.agentPhone || '56941709793')}?text=${encodeURIComponent('Hola, vi la propiedad «' + prop.title + '» en GPRB y me gustaría más información.')}"
+                 target="_blank" rel="noopener" class="btn-whatsapp-alt">
+                <i class="fab fa-whatsapp"></i> Escribir por WhatsApp
+              </a>
             </div>
             <div class="sidebar-card">
               <h3>Detalles</h3>
@@ -637,6 +649,19 @@ function renderDashboard() {
 
   renderSliderEditor();
   renderDashList();
+  loadMessagesBadge();
+}
+
+async function loadMessagesBadge() {
+  if (!window.GPRB_SB) return;
+  try {
+    const msgs = await window.GPRB_SB.getContactMessages();
+    const badge = document.getElementById('msgTabBadge');
+    if (badge) {
+      badge.textContent = msgs.length;
+      badge.style.display = msgs.length > 0 ? 'inline-flex' : 'none';
+    }
+  } catch (e) { /* silencioso */ }
 }
 
 function renderDashList() {
@@ -691,12 +716,14 @@ function switchDashTab(tab) {
   document.getElementById('dashPanelSliderEdit').style.display = tab === 'sliderEdit' ? 'block' : 'none';
   document.getElementById('dashPanelList').style.display = tab === 'list' ? 'block' : 'none';
   document.getElementById('dashPanelAdd').style.display = tab === 'add' ? 'block' : 'none';
+  document.getElementById('dashPanelMessages').style.display = tab === 'messages' ? 'block' : 'none';
 
   const tabs = document.querySelectorAll('.dash-tab');
-  const tabIndex = tab === 'sliderEdit' ? 0 : tab === 'list' ? 1 : 2;
+  const tabIndex = tab === 'sliderEdit' ? 0 : tab === 'list' ? 1 : tab === 'add' ? 2 : 3;
   if (tabs[tabIndex]) tabs[tabIndex].classList.add('active');
 
   if (tab === 'add') resetForm();
+  if (tab === 'messages') renderMessagesPanel();
 }
 
 // ===================== IMAGE UPLOADER STATE =====================
@@ -1145,6 +1172,115 @@ function renderLightbox() {
 function imgFallback(img) {
   img.onerror = null;
   img.src = FALLBACK_IMG;
+}
+
+// ===================== MESSAGES INBOX =====================
+async function renderMessagesPanel() {
+  const inbox = document.getElementById('messagesInbox');
+  if (!inbox) return;
+  inbox.innerHTML = '<div class="msgs-loading"><i class="fas fa-spinner fa-spin"></i> Cargando mensajes...</div>';
+
+  try {
+    const messages = await window.GPRB_SB.getContactMessages();
+
+    // Actualizar badge
+    const badge = document.getElementById('msgTabBadge');
+    if (badge) {
+      badge.textContent = messages.length;
+      badge.style.display = messages.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    if (!messages || messages.length === 0) {
+      inbox.innerHTML = `
+        <div class="no-results">
+          <i class="fas fa-inbox"></i>
+          <h3>Sin mensajes</h3>
+          <p>Aún no has recibido consultas de clientes.</p>
+        </div>`;
+      return;
+    }
+
+    inbox.innerHTML = `
+      <div class="msgs-header">
+        <h3><i class="fas fa-inbox"></i> Bandeja de Entrada</h3>
+        <span class="msgs-count">${messages.length} mensaje${messages.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="msgs-list">
+        ${messages.map((m, i) => renderMessageCard(m, i)).join('')}
+      </div>`;
+  } catch (e) {
+    inbox.innerHTML = `
+      <div class="no-results">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Error al cargar</h3>
+        <p>No se pudieron obtener los mensajes. Intenta de nuevo.</p>
+        <button class="btn btn-outline" onclick="renderMessagesPanel()" style="margin-top:12px;">
+          <i class="fas fa-sync-alt"></i> Reintentar
+        </button>
+      </div>`;
+  }
+}
+
+function renderMessageCard(m, i) {
+  const initial = (m.name || '?').charAt(0).toUpperCase();
+  const date = m.created_at
+    ? new Date(m.created_at).toLocaleDateString('es-CL', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    : '';
+  const msgText = m.message || '';
+  const preview = msgText.length > 120 ? msgText.substring(0, 120) + '…' : msgText;
+  const hasMore = msgText.length > 120;
+
+  const colorIndex = initial.charCodeAt(0) % 5;
+  const avatarColors = ['#00c896', '#ff6b35', '#6c5ce7', '#0984e3', '#e17055'];
+  const avatarColor = avatarColors[colorIndex];
+
+  return `
+    <div class="msg-card">
+      <div class="msg-avatar" style="background:${avatarColor}">${initial}</div>
+      <div class="msg-body">
+        <div class="msg-top">
+          <div class="msg-meta">
+            <strong class="msg-name">${escapeHtml(m.name || 'Sin nombre')}</strong>
+            ${m.category ? `<span class="msg-tag">${escapeHtml(m.category)}</span>` : ''}
+            ${m.operation ? `<span class="msg-tag msg-tag-op">${escapeHtml(m.operation)}</span>` : ''}
+          </div>
+          <span class="msg-date"><i class="fas fa-clock"></i> ${date}</span>
+        </div>
+        <div class="msg-contacts">
+          ${m.email ? `<a href="mailto:${escapeAttr(m.email)}" class="msg-contact-link" title="Enviar email"><i class="fas fa-envelope"></i> ${escapeHtml(m.email)}</a>` : ''}
+          ${m.phone ? `<a href="tel:${escapeAttr(m.phone)}" class="msg-contact-link" title="Llamar"><i class="fas fa-phone"></i> ${escapeHtml(m.phone)}</a>` : ''}
+          ${m.phone ? `<a href="https://wa.me/${cleanPhone(m.phone)}?text=${encodeURIComponent('Hola ' + (m.name || '') + ', gracias por contactarte con GPRB.')}" target="_blank" rel="noopener" class="msg-contact-link msg-wa-link" title="WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a>` : ''}
+        </div>
+        <div class="msg-text">
+          <span class="msg-preview" id="msgPrev${i}">${escapeHtml(preview)}</span>
+          ${hasMore ? `<span class="msg-full" id="msgFull${i}" style="display:none">${escapeHtml(msgText)}</span>` : ''}
+          ${hasMore ? `<button class="msg-toggle" onclick="toggleMsgExpand(${i})"><i class="fas fa-chevron-down" id="msgIcon${i}"></i> Ver más</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleMsgExpand(i) {
+  const prev = document.getElementById('msgPrev' + i);
+  const full = document.getElementById('msgFull' + i);
+  const icon = document.getElementById('msgIcon' + i);
+  const btn = icon ? icon.closest('.msg-toggle') : null;
+  if (!prev || !full) return;
+  const isOpen = full.style.display !== 'none';
+  prev.style.display = isOpen ? '' : 'none';
+  full.style.display = isOpen ? 'none' : '';
+  if (icon) icon.className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+  if (btn) btn.innerHTML = `<i class="fas fa-chevron-${isOpen ? 'down' : 'up'}" id="msgIcon${i}"></i> ${isOpen ? 'Ver más' : 'Ver menos'}`;
+}
+
+// ===================== UTILITY: CLEAN PHONE =====================
+function cleanPhone(phone) {
+  if (!phone) return '56941709793';
+  const digits = String(phone).replace(/\D/g, '');
+  if (digits.startsWith('56') && digits.length >= 10) return digits;
+  if (digits.startsWith('9') && digits.length === 9) return '56' + digits;
+  if (digits.length >= 8) return '56' + digits;
+  return '56941709793';
 }
 
 // ===================== INIT =====================

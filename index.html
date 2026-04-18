@@ -630,6 +630,10 @@
           <button class="dash-tab" onclick="switchDashTab('add')">
             <i class="fas fa-plus-circle"></i> Agregar
           </button>
+          <button class="dash-tab" onclick="switchDashTab('messages')" id="tabMessages">
+            <i class="fas fa-inbox"></i> Mensajes
+            <span class="tab-badge" id="msgTabBadge" style="display:none;">0</span>
+          </button>
         </div>
 
         <!-- Tab: Edit Slider -->
@@ -892,6 +896,14 @@
             </div>
           </form>
         </div>
+
+        <!-- Tab: Messages -->
+        <div class="dash-panel" id="dashPanelMessages" style="display:none;">
+          <div id="messagesInbox">
+            <div class="msgs-loading"><i class="fas fa-spinner fa-spin"></i> Cargando mensajes...</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
