@@ -516,17 +516,23 @@ function renderDetail(propId) {
   const priceText = `$${prop.price.toLocaleString('es-CL')} CLP${prop.status === 'Arriendo' ? '/mes' : ''}`;
   const galleryImages = [prop.image, ...(prop.gallery || [])].filter(Boolean);
   const mainImg = galleryImages[0] || '';
-  const sideImg1 = galleryImages[1] || mainImg;
-  const sideImg2 = galleryImages[2] || mainImg;
+  const thumbs = [1,2,3,4].map(i => galleryImages[i] || mainImg);
+  const totalPhotos = galleryImages.length;
   const agentInitial = prop.agentName ? prop.agentName.charAt(0).toUpperCase() : 'G';
 
   document.getElementById('propertyDetail').innerHTML = `
     <div class="detail-hero">
-      <div class="detail-gallery">
-        <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(prop.title)}" onerror="imgFallback(this)">
-        <div class="detail-gallery-side">
-          <img src="${escapeHtml(sideImg1)}" alt="Gallery" onerror="this.style.display='none'">
-          <img src="${escapeHtml(sideImg2)}" alt="Gallery" onerror="this.style.display='none'">
+      <div class="detail-gallery-modern">
+        <div class="dgm-main">
+          <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(prop.title)}" onerror="imgFallback(this)" onclick="openLightbox(0, ${prop.id})">
+        </div>
+        <div class="dgm-grid">
+          ${thumbs.map((src, i) => `
+            <div class="dgm-thumb${i === 3 && totalPhotos > 5 ? ' dgm-thumb-more' : ''}">
+              <img src="${escapeHtml(src)}" alt="Foto ${i+2}" onerror="imgFallback(this)" onclick="openLightbox(${i+1}, ${prop.id})">
+              ${i === 3 && totalPhotos > 5 ? `<div class="dgm-more-overlay" onclick="openLightbox(${i+1}, ${prop.id})"><i class="fas fa-images"></i><span>+${totalPhotos - 4} fotos</span></div>` : ''}
+            </div>
+          `).join('')}
         </div>
       </div>
     </div>
@@ -1083,6 +1089,40 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ===================== LIGHTBOX =====================
+let _lightboxImages = [];
+let _lightboxIndex = 0;
+
+function openLightbox(index, propId) {
+  const prop = getProperties().find(p => p.id === propId);
+  if (!prop) return;
+  _lightboxImages = [prop.image, ...(prop.gallery || [])].filter(Boolean);
+  _lightboxIndex = index;
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  renderLightbox();
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (lb) lb.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function lightboxNav(dir) {
+  _lightboxIndex = (_lightboxIndex + dir + _lightboxImages.length) % _lightboxImages.length;
+  renderLightbox();
+}
+
+function renderLightbox() {
+  const img = document.getElementById('lightboxImg');
+  const counter = document.getElementById('lightboxCounter');
+  if (img) { img.src = _lightboxImages[_lightboxIndex]; img.onerror = () => imgFallback(img); }
+  if (counter) counter.textContent = `${_lightboxIndex + 1} / ${_lightboxImages.length}`;
+}
+
 function imgFallback(img) {
   img.onerror = null;
   img.src = FALLBACK_IMG;
@@ -1127,6 +1167,13 @@ document.addEventListener('click', (e) => {
 
 // Close modal with ESC key
 document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if (lb && lb.style.display !== 'none') {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') lightboxNav(1);
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    return;
+  }
   if (e.key === 'Escape') {
     if (document.getElementById('confirmModal').style.display === 'flex') closeModal();
   }
