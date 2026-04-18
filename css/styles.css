@@ -2365,16 +2365,16 @@ body { overscroll-behavior-y: contain; }
 
 /* ===================== SLIDER EDITOR MULTI ===================== */
 .slide-editor-card {
-  background: #f8f9fa;
-  border: 2px solid #e1e5ea;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
   transition: all 0.3s;
 }
-.slide-editor-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(0,200,150,0.08); }
+.slide-editor-card:hover { border-color: var(--primary); box-shadow: 0 4px 20px rgba(0,200,150,0.15); }
 .slide-editor-card h4 {
-  color: var(--dark);
+  color: #fff;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -2390,6 +2390,37 @@ body { overscroll-behavior-y: contain; }
   align-items: center;
   justify-content: center;
   font-size: 0.85rem;
+}
+
+/* Slide editor labels e inputs */
+.slide-editor-card label {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 6px;
+}
+.slide-editor-card input[type="text"],
+.slide-editor-card input[type="url"] {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+.slide-editor-card input::placeholder { color: rgba(255,255,255,0.35); }
+.slide-editor-card input:focus {
+  border-color: var(--primary);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 3px rgba(0,200,150,0.15);
 }
 
 /* ===================== IMAGE LOADING ===================== */
