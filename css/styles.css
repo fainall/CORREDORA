@@ -124,10 +124,11 @@ img { max-width: 100%; display: block; }
 }
 
 .logo-img {
-  width: 44px;
-  height: 44px;
+  height: 52px;
+  width: auto;
+  max-width: 200px;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
@@ -1859,8 +1860,7 @@ body > #page-listings .card-feature { color: var(--text-light); }
   .menu-toggle { display: block; order: 3; }
   .header { height: 64px; }
   .header-inner { height: 64px; gap: 12px; }
-  .logo-img { width: 36px; height: 36px; }
-  .logo-name { font-size: 1.15rem; }
+  .logo-img { height: 42px; width: auto; max-width: 160px; }
 
   /* Mobile menu full-screen drawer */
   .mobile-nav {
@@ -2136,8 +2136,7 @@ body > #page-listings .card-feature { color: var(--text-light); }
 
 /* ---------- Extra small (≤360px) ---------- */
 @media (max-width: 360px) {
-  .logo-name { font-size: 1rem; }
-  .logo-img { width: 32px; height: 32px; }
+  .logo-img { height: 36px; width: auto; max-width: 140px; }
   .hero-content h1 { font-size: 1.65rem; }
   .search-tab { padding: 10px 14px; font-size: 0.78rem; }
   .btn { padding: 10px 20px; font-size: 0.88rem; }
