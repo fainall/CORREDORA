@@ -195,6 +195,51 @@ async function sbGetContactMessages() {
 }
 
 // ============================================================
+// STORAGE (imágenes de propiedades)
+// ============================================================
+const STORAGE_BUCKET = 'properties';
+
+function makeStoragePath(file) {
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const rnd = Math.random().toString(36).substring(2, 10);
+  const ts = Date.now();
+  return `${ts}-${rnd}.${ext}`;
+}
+
+async function sbUploadImage(file) {
+  if (!file) throw new Error('Archivo vacío');
+  const path = makeStoragePath(file);
+  const { error } = await sbClient.storage
+    .from(STORAGE_BUCKET)
+    .upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type });
+  if (error) { console.error('sbUploadImage', error); throw error; }
+  const { data } = sbClient.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+async function sbUploadImages(files) {
+  const list = Array.from(files || []);
+  const urls = [];
+  for (const f of list) {
+    try { urls.push(await sbUploadImage(f)); }
+    catch (e) { console.error('sbUploadImages fallo', f.name, e); }
+  }
+  return urls;
+}
+
+async function sbDeleteImageByUrl(url) {
+  try {
+    // Extraer path del publicUrl: .../storage/v1/object/public/properties/<path>
+    const m = url.match(/\/public\/properties\/(.+)$/);
+    if (!m) return false;
+    const path = decodeURIComponent(m[1]);
+    const { error } = await sbClient.storage.from(STORAGE_BUCKET).remove([path]);
+    if (error) { console.warn('sbDeleteImageByUrl', error); return false; }
+    return true;
+  } catch (e) { return false; }
+}
+
+// ============================================================
 // AUTH
 // ============================================================
 async function sbSignIn(email, password) {
@@ -231,5 +276,8 @@ window.GPRB_SB = {
   signIn: sbSignIn,
   signOut: sbSignOut,
   getSession: sbGetSession,
-  onAuthChange: sbOnAuthChange
+  onAuthChange: sbOnAuthChange,
+  uploadImage: sbUploadImage,
+  uploadImages: sbUploadImages,
+  deleteImageByUrl: sbDeleteImageByUrl
 };

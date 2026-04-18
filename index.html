@@ -791,13 +791,41 @@
 
             <div class="form-section">
               <h3><i class="fas fa-image"></i> Imagenes</h3>
+
               <div class="form-group full-width">
-                <label>URL Imagen Principal *</label>
-                <input type="url" id="fImage" required placeholder="https://...">
+                <label>Imagen Principal *</label>
+                <div class="img-uploader" id="mainUploader">
+                  <input type="file" id="fMainImageFile" accept="image/*" style="display:none" onchange="handleMainImageChange(event)">
+                  <input type="hidden" id="fImage">
+                  <div class="img-uploader-empty" id="mainUploaderEmpty" onclick="document.getElementById('fMainImageFile').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Click para seleccionar imagen</span>
+                    <small>JPG, PNG, WEBP — máx 10MB</small>
+                  </div>
+                  <div class="img-uploader-preview" id="mainUploaderPreview" style="display:none">
+                    <img id="mainImagePreview" alt="Preview">
+                    <div class="img-uploader-actions">
+                      <button type="button" class="btn-img-change" onclick="document.getElementById('fMainImageFile').click()">
+                        <i class="fas fa-sync-alt"></i> Cambiar
+                      </button>
+                      <button type="button" class="btn-img-remove" onclick="clearMainImage()">
+                        <i class="fas fa-trash"></i> Quitar
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
+
               <div class="form-group full-width">
-                <label>Imagenes Adicionales (URLs separadas por coma)</label>
-                <input type="text" id="fGallery" placeholder="https://img1.jpg, https://img2.jpg">
+                <label>Galería (imágenes adicionales)</label>
+                <div class="img-uploader">
+                  <input type="file" id="fGalleryFiles" accept="image/*" multiple style="display:none" onchange="handleGalleryChange(event)">
+                  <input type="hidden" id="fGallery">
+                  <div class="gallery-preview-grid" id="galleryPreviewGrid"></div>
+                  <button type="button" class="btn-add-gallery" onclick="document.getElementById('fGalleryFiles').click()">
+                    <i class="fas fa-plus"></i> Agregar imágenes
+                  </button>
+                </div>
               </div>
             </div>
 

@@ -674,6 +674,89 @@ function switchDashTab(tab) {
   if (tab === 'add') resetForm();
 }
 
+// ===================== IMAGE UPLOADER STATE =====================
+// Gallery items: { kind: 'url'|'file', value: string|File, previewUrl: string }
+let _mainImageState = null; // { kind: 'url'|'file', value, previewUrl }
+let _galleryItems = [];
+
+function handleMainImageChange(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) {
+    showToast('La imagen no puede superar 10MB');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    _mainImageState = { kind: 'file', value: file, previewUrl: reader.result };
+    document.getElementById('mainImagePreview').src = reader.result;
+    document.getElementById('mainUploaderEmpty').style.display = 'none';
+    document.getElementById('mainUploaderPreview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function setMainImageFromUrl(url) {
+  if (!url) { clearMainImage(); return; }
+  _mainImageState = { kind: 'url', value: url, previewUrl: url };
+  document.getElementById('mainImagePreview').src = url;
+  document.getElementById('mainUploaderEmpty').style.display = 'none';
+  document.getElementById('mainUploaderPreview').style.display = 'block';
+  document.getElementById('fImage').value = url;
+}
+
+function clearMainImage() {
+  _mainImageState = null;
+  document.getElementById('fMainImageFile').value = '';
+  document.getElementById('fImage').value = '';
+  document.getElementById('mainImagePreview').src = '';
+  document.getElementById('mainUploaderEmpty').style.display = 'flex';
+  document.getElementById('mainUploaderPreview').style.display = 'none';
+}
+
+function handleGalleryChange(e) {
+  const files = Array.from(e.target.files || []);
+  for (const file of files) {
+    if (file.size > 10 * 1024 * 1024) { showToast(`"${file.name}" supera 10MB, se omite`); continue; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      _galleryItems.push({ kind: 'file', value: file, previewUrl: reader.result });
+      renderGalleryPreview();
+    };
+    reader.readAsDataURL(file);
+  }
+  e.target.value = ''; // reset input to allow re-selecting same file
+}
+
+function setGalleryFromUrls(urls) {
+  _galleryItems = (urls || []).map(u => ({ kind: 'url', value: u, previewUrl: u }));
+  renderGalleryPreview();
+}
+
+function renderGalleryPreview() {
+  const grid = document.getElementById('galleryPreviewGrid');
+  if (!grid) return;
+  grid.innerHTML = _galleryItems.map((it, i) => `
+    <div class="gallery-preview-item">
+      <img src="${escapeAttr(it.previewUrl)}" alt="Imagen ${i + 1}" onerror="imgFallback(this)">
+      <button type="button" class="btn-remove-item" onclick="removeGalleryItem(${i})" title="Quitar">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function removeGalleryItem(idx) {
+  _galleryItems.splice(idx, 1);
+  renderGalleryPreview();
+}
+
+function resetImageUploaders() {
+  clearMainImage();
+  _galleryItems = [];
+  renderGalleryPreview();
+}
+
 // ===================== PROPERTY FORM (ADMIN) =====================
 function saveProperty(e) {
   e.preventDefault();
@@ -692,8 +775,11 @@ function saveProperty(e) {
   const security = [];
   form.querySelectorAll('input[name="security"]:checked').forEach(cb => security.push(cb.value));
 
-  const galleryStr = document.getElementById('fGallery').value.trim();
-  const gallery = galleryStr ? galleryStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+  // --- Imagen principal ---
+  if (!_mainImageState) {
+    showToast('Debes seleccionar una imagen principal');
+    return;
+  }
 
   const propData = {
     title: document.getElementById('fTitle').value.trim(),
@@ -714,8 +800,8 @@ function saveProperty(e) {
     platforms: document.getElementById('fPlatforms').value || 'No',
     pricePerM2: parseFloat(document.getElementById('fPricePerM2').value) || 0,
     propertyCode: document.getElementById('fPropertyCode').value.trim(),
-    image: document.getElementById('fImage').value.trim(),
-    gallery: gallery,
+    image: '', // se llena tras subir
+    gallery: [], // se llena tras subir
     description: document.getElementById('fDesc').value.trim(),
     services: services,
     amenities: amenities,
@@ -726,7 +812,33 @@ function saveProperty(e) {
   };
 
   (async () => {
+    const submitBtn = document.getElementById('formSubmitBtn');
+    const btnOriginal = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo imágenes...'; }
+
     try {
+      // 1. Imagen principal
+      let mainUrl = '';
+      if (_mainImageState.kind === 'url') {
+        mainUrl = _mainImageState.value;
+      } else {
+        mainUrl = await window.GPRB_SB.uploadImage(_mainImageState.value);
+      }
+      propData.image = mainUrl;
+
+      // 2. Galería: upload pendientes, mantener URLs existentes
+      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+      const galleryUrls = [];
+      for (const it of _galleryItems) {
+        if (it.kind === 'url') galleryUrls.push(it.value);
+        else {
+          try { galleryUrls.push(await window.GPRB_SB.uploadImage(it.value)); }
+          catch (e) { console.warn('skip', e); }
+        }
+      }
+      propData.gallery = galleryUrls;
+
+      // 3. Guardar en DB
       if (editId) {
         const updated = await window.GPRB_SB.updateProperty(parseInt(editId), propData);
         const idx = _propertiesCache.findIndex(p => p.id === updated.id);
@@ -742,6 +854,8 @@ function saveProperty(e) {
       renderDashboard();
     } catch (err) {
       showToast('Error al guardar: ' + (err.message || 'intenta de nuevo'));
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = btnOriginal; }
     }
   })();
 }
@@ -771,8 +885,9 @@ function editProperty(id) {
   document.getElementById('fPlatforms').value = prop.platforms || '';
   document.getElementById('fPricePerM2').value = prop.pricePerM2 || '';
   document.getElementById('fPropertyCode').value = prop.propertyCode || '';
-  document.getElementById('fImage').value = prop.image || '';
-  document.getElementById('fGallery').value = (prop.gallery || []).join(', ');
+  // Imagen principal y galería → cargar previews
+  setMainImageFromUrl(prop.image || '');
+  setGalleryFromUrls(prop.gallery || []);
   document.getElementById('fDesc').value = prop.description || '';
   document.getElementById('fAgent').value = prop.agentName || '';
   document.getElementById('fPhone').value = prop.agentPhone || '';
@@ -793,6 +908,7 @@ function resetForm() {
   document.getElementById('editId').value = '';
   document.getElementById('formSubmitBtn').innerHTML = '<i class="fas fa-plus-circle"></i> Publicar';
   form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+  resetImageUploaders();
 }
 
 // ===================== DELETE =====================
