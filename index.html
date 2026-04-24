@@ -26,6 +26,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Anti-flash: aplica tema guardado antes del primer paint -->
+  <script>try{if(localStorage.getItem('gprb-theme')==='light')document.body.classList.add('light-mode');}catch(e){}</script>
 
   <!-- Top Bar -->
   <div class="topbar">
@@ -64,6 +66,9 @@
         </a>
       </nav>
       <div class="header-actions">
+        <button type="button" class="header-icon-btn theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Cambiar tema" title="Modo oscuro / claro">
+          <i class="fas fa-sun" id="themeIcon"></i>
+        </button>
         <a href="#" onclick="showPage('login'); return false;" class="header-icon-btn" id="navAdmin" aria-label="Admin"><i class="fas fa-user-shield"></i></a>
         <button type="button" class="header-icon-btn" onclick="toggleHeaderSearch()" aria-label="Buscar"><i class="fas fa-search"></i></button>
         <a href="#" onclick="showPage('dashboard'); return false;" class="btn-add-property" id="btnAddProp" style="display:none;">

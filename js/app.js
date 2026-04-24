@@ -1273,6 +1273,33 @@ function toggleMsgExpand(i) {
   if (btn) btn.innerHTML = `<i class="fas fa-chevron-${isOpen ? 'down' : 'up'}" id="msgIcon${i}"></i> ${isOpen ? 'Ver más' : 'Ver menos'}`;
 }
 
+// ===================== THEME =====================
+function initTheme() {
+  const saved = localStorage.getItem('gprb-theme') || 'dark';
+  applyTheme(saved, false);
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.contains('light-mode');
+  applyTheme(isLight ? 'dark' : 'light', true);
+}
+
+function applyTheme(theme, animate) {
+  if (animate) {
+    document.body.style.transition = 'background 0.35s ease, color 0.35s ease';
+    setTimeout(() => { document.body.style.transition = ''; }, 400);
+  }
+  const isLight = theme === 'light';
+  document.body.classList.toggle('light-mode', isLight);
+  localStorage.setItem('gprb-theme', theme);
+
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.title = isLight ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro';
+}
+
 // ===================== UTILITY: CLEAN PHONE =====================
 function cleanPhone(phone) {
   if (!phone) return '56941709793';
@@ -1285,6 +1312,9 @@ function cleanPhone(phone) {
 
 // ===================== INIT =====================
 document.addEventListener('DOMContentLoaded', async () => {
+  // 0. Aplicar tema guardado ANTES de cualquier render (evita flash)
+  initTheme();
+
   // 1. Hidratar sesión de Supabase (si había login previo persistido)
   if (window.GPRB_SB) {
     try {
