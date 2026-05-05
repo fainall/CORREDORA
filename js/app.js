@@ -30,8 +30,12 @@ const defaultProperties = [
     platforms: 'Si',
     pricePerM2: 188888,
     propertyCode: 'BDG-001',
-    image: 'https://images.unsplash.com/photo-1553531889-e6cf91d13ab6?w=800&q=80',
-    gallery: [],
+    image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
+      'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80'
+    ],
     description: 'Bodega industrial cerrada con excelentes caracteristicas. Piso de hormigon resistente, acceso de carga y descarga, oficinas internas. Ubicacion estrategica en Providencia.',
     services: ['Internet', 'Agua', 'Luz'],
     amenities: ['Aire', 'Generador'],
@@ -61,7 +65,10 @@ const defaultProperties = [
     pricePerM2: 20833333,
     propertyCode: 'OFC-001',
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
-    gallery: [],
+    gallery: [
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80',
+      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80'
+    ],
     description: 'Moderna oficina ejecutiva con acabados premium. Climatizacion central, vista a la ciudad, zonas colaborativas y privadas.',
     services: ['Internet', 'Agua', 'Gas', 'Luz', 'Telefonica'],
     amenities: ['Aire', 'Calefaccion'],
@@ -91,7 +98,10 @@ const defaultProperties = [
     pricePerM2: 50000000,
     propertyCode: 'TRR-001',
     image: 'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
-    gallery: [],
+    gallery: [
+      'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
+      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80'
+    ],
     description: 'Amplio terreno industrial en zona franca con excelente acceso logistico. Ideal para plantas manufactureras, distribuidoras o centros de acopio.',
     services: ['Agua', 'Luz'],
     amenities: ['Generador'],
@@ -105,19 +115,19 @@ const defaultProperties = [
 const defaultSlider = {
   slides: [
     {
-      bgUrl: 'https://images.unsplash.com/photo-1553531889-e6cf91d13ab6?w=1400&q=80',
+      bgUrl: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&q=85',
       tag: 'Bienvenido a GPRB',
       title: 'Gestión Inmobiliaria Industrial',
       subtitle: 'Las mejores soluciones en propiedades industriales de Chile'
     },
     {
-      bgUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80',
+      bgUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=85',
       tag: 'Amplio Catálogo',
       title: 'Bodegas, Oficinas y Terrenos',
       subtitle: 'Más de 8 categorías de inmuebles para tu negocio'
     },
     {
-      bgUrl: 'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=1400&q=80',
+      bgUrl: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&q=85',
       tag: 'Cobertura Nacional',
       title: 'Asesoría Profesional',
       subtitle: 'Expertos en el mercado inmobiliario industrial chileno'
@@ -268,23 +278,38 @@ function renderSlider() {
   const container = document.getElementById('sliderSlidesContainer');
   const dotsContainer = document.getElementById('sliderDots');
 
-  container.innerHTML = data.slides.map((s, i) => `
-    <div class="slider-slide${i === 0 ? ' active' : ''}" role="group" aria-roledescription="slide" aria-label="Slide ${i + 1} de ${data.slides.length}">
-      <div class="slider-bg" style="background-image:url('${escapeAttr(s.bgUrl)}')"></div>
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <div class="container">
-          <span class="hero-tag">${escapeHtml(s.tag || 'GPRB')}</span>
-          <h1>${formatHeroTitle(s.title)}</h1>
-          <p>${escapeHtml(s.subtitle)}</p>
+  // Update static hero background from first slide
+  if (data.slides && data.slides.length > 0) {
+    const heroBg = document.getElementById('heroBg');
+    if (heroBg) heroBg.style.backgroundImage = `url('${escapeAttr(data.slides[0].bgUrl)}')`;
+    const heroTitle = document.getElementById('heroTitle');
+    if (heroTitle) heroTitle.innerHTML = formatHeroTitle(data.slides[0].title);
+    const heroSubtitle = document.getElementById('heroSubtitle');
+    if (heroSubtitle) heroSubtitle.textContent = data.slides[0].subtitle || '';
+  }
+
+  // Legacy slider containers (used by dashboard editor preview)
+  if (container) {
+    container.innerHTML = data.slides.map((s, i) => `
+      <div class="slider-slide${i === 0 ? ' active' : ''}" role="group" aria-roledescription="slide" aria-label="Slide ${i + 1} de ${data.slides.length}">
+        <div class="slider-bg" style="background-image:url('${escapeAttr(s.bgUrl)}')"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="container">
+            <span class="hero-tag">${escapeHtml(s.tag || 'GPRB')}</span>
+            <h1>${formatHeroTitle(s.title)}</h1>
+            <p>${escapeHtml(s.subtitle)}</p>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  }
 
-  dotsContainer.innerHTML = data.slides.map((_, i) =>
-    `<button type="button" class="slider-dot${i === 0 ? ' active' : ''}" onclick="goToSlide(${i}); resetSliderAutoplay();" aria-label="Ir al slide ${i + 1}" role="tab"></button>`
-  ).join('');
+  if (dotsContainer) {
+    dotsContainer.innerHTML = data.slides.map((_, i) =>
+      `<button type="button" class="slider-dot${i === 0 ? ' active' : ''}" onclick="goToSlide(${i}); resetSliderAutoplay();" aria-label="Ir al slide ${i + 1}" role="tab"></button>`
+    ).join('');
+  }
 
   currentSlide = 0;
 }
@@ -472,30 +497,57 @@ function createPropertyCard(prop) {
 }
 
 // ===================== RENDER PAGES =====================
+function animateCounter(el, target, duration = 1200) {
+  if (!el) return;
+  const start = performance.now();
+  const from = 0;
+  const update = (now) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (target - from) * ease);
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
 function renderHome() {
   const props = getProperties();
-  const grid = document.getElementById('featuredGrid');
-  grid.innerHTML = '';
-  props.slice(0, 6).forEach(p => grid.appendChild(createPropertyCard(p)));
 
-  document.getElementById('statTotal').textContent = props.length;
+  // Sección Destacadas
+  const featuredGrid = document.getElementById('featuredGrid');
+  if (featuredGrid) {
+    featuredGrid.innerHTML = '';
+    props.slice(0, 6).forEach(p => featuredGrid.appendChild(createPropertyCard(p)));
+  }
 
-  const typeMap = {
-    'Departamento': 'catDep',
-    'Casa': 'catCasa',
-    'Oficina': 'catOfi',
-    'Bodega': 'catBod',
-    'Industrial': 'catInd',
-    'Local': 'catLoc',
-    'Parcela': 'catPar',
-    'Terreno': 'catTer'
-  };
+  // Sección Arriendo
+  const arriendoGrid = document.getElementById('arriendoGrid');
+  const arriendoEmpty = document.getElementById('arriendoEmpty');
+  const arriendoProps = props.filter(p => p.status === 'Arriendo');
+  if (arriendoGrid) {
+    arriendoGrid.innerHTML = '';
+    arriendoProps.slice(0, 6).forEach(p => arriendoGrid.appendChild(createPropertyCard(p)));
+  }
+  if (arriendoEmpty) arriendoEmpty.style.display = arriendoProps.length === 0 ? 'flex' : 'none';
+  const sectionArriendo = document.getElementById('sectionArriendo');
+  if (sectionArriendo) sectionArriendo.style.display = arriendoProps.length === 0 ? 'none' : '';
 
-  Object.entries(typeMap).forEach(([type, id]) => {
-    const count = props.filter(p => p.type === type).length;
-    const el = document.getElementById(id);
-    if (el) el.textContent = count;
-  });
+  // Sección Venta
+  const ventaGrid = document.getElementById('ventaGrid');
+  const ventaEmpty = document.getElementById('ventaEmpty');
+  const ventaProps = props.filter(p => p.status === 'Venta');
+  if (ventaGrid) {
+    ventaGrid.innerHTML = '';
+    ventaProps.slice(0, 6).forEach(p => ventaGrid.appendChild(createPropertyCard(p)));
+  }
+  if (ventaEmpty) ventaEmpty.style.display = ventaProps.length === 0 ? 'flex' : 'none';
+  const sectionVenta = document.getElementById('sectionVenta');
+  if (sectionVenta) sectionVenta.style.display = ventaProps.length === 0 ? 'none' : '';
+
+  // Stats
+  const statEl = document.getElementById('statTotal');
+  animateCounter(statEl, props.length);
 }
 
 function renderListings(filteredProps) {
@@ -722,7 +774,7 @@ function switchDashTab(tab) {
   const tabIndex = tab === 'sliderEdit' ? 0 : tab === 'list' ? 1 : tab === 'add' ? 2 : 3;
   if (tabs[tabIndex]) tabs[tabIndex].classList.add('active');
 
-  if (tab === 'add') resetForm();
+  if (tab === 'add') { resetForm(); setTimeout(initImageUploaderDragDrop, 50); }
   if (tab === 'messages') renderMessagesPanel();
 }
 
@@ -796,6 +848,9 @@ function renderGalleryPreview() {
       </button>
     </div>
   `).join('');
+  // Toggle hint visibility
+  const hint = document.getElementById('galleryHint');
+  if (hint) hint.style.display = _galleryItems.length === 0 ? 'flex' : 'none';
 }
 
 function removeGalleryItem(idx) {
@@ -807,6 +862,76 @@ function resetImageUploaders() {
   clearMainImage();
   _galleryItems = [];
   renderGalleryPreview();
+}
+
+// ===================== DRAG & DROP + URL PASTE =====================
+function initImageUploaderDragDrop() {
+  // --- Main image uploader ---
+  const mainUploader = document.getElementById('mainUploader');
+  if (mainUploader) {
+    mainUploader.addEventListener('dragover', e => { e.preventDefault(); mainUploader.classList.add('drag-over'); });
+    mainUploader.addEventListener('dragleave', e => { if (!mainUploader.contains(e.relatedTarget)) mainUploader.classList.remove('drag-over'); });
+    mainUploader.addEventListener('drop', e => {
+      e.preventDefault();
+      mainUploader.classList.remove('drag-over');
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        if (file.size > 10 * 1024 * 1024) { showToast('La imagen no puede superar 10MB'); return; }
+        const reader = new FileReader();
+        reader.onload = () => {
+          _mainImageState = { kind: 'file', value: file, previewUrl: reader.result };
+          document.getElementById('mainImagePreview').src = reader.result;
+          document.getElementById('mainUploaderEmpty').style.display = 'none';
+          document.getElementById('mainUploaderPreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Check if a URL was dropped
+        const text = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/uri-list');
+        if (text && /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)/i.test(text)) {
+          setMainImageFromUrl(text.trim());
+        }
+      }
+    });
+    // Paste URL via clipboard on the uploader empty area
+    document.getElementById('mainUploaderEmpty') && document.getElementById('mainUploaderEmpty').addEventListener('paste', e => {
+      const text = (e.clipboardData || window.clipboardData).getData('text');
+      if (text && /^https?:\/\//i.test(text)) { setMainImageFromUrl(text.trim()); e.preventDefault(); }
+    });
+  }
+
+  // --- Gallery uploader ---
+  const galleryUploader = document.getElementById('galleryUploader');
+  if (galleryUploader) {
+    galleryUploader.addEventListener('dragover', e => { e.preventDefault(); galleryUploader.classList.add('drag-over'); });
+    galleryUploader.addEventListener('dragleave', e => { if (!galleryUploader.contains(e.relatedTarget)) galleryUploader.classList.remove('drag-over'); });
+    galleryUploader.addEventListener('drop', e => {
+      e.preventDefault();
+      galleryUploader.classList.remove('drag-over');
+      const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
+      for (const file of files) {
+        if (file.size > 10 * 1024 * 1024) { showToast(`"${file.name}" supera 10MB, se omite`); continue; }
+        const reader = new FileReader();
+        reader.onload = () => { _galleryItems.push({ kind: 'file', value: file, previewUrl: reader.result }); renderGalleryPreview(); };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+// URL manual para imagen principal
+function promptMainImageUrl() {
+  const url = window.prompt('Pega la URL de la imagen:', _mainImageState && _mainImageState.kind === 'url' ? _mainImageState.value : '');
+  if (url && url.trim()) setMainImageFromUrl(url.trim());
+}
+
+// URL manual para galería
+function addGalleryUrl() {
+  const url = window.prompt('Pega la URL de la imagen a agregar:');
+  if (url && url.trim()) {
+    _galleryItems.push({ kind: 'url', value: url.trim(), previewUrl: url.trim() });
+    renderGalleryPreview();
+  }
 }
 
 // ===================== PROPERTY FORM (ADMIN) =====================
@@ -1139,6 +1264,24 @@ function scrollToTop() {
 let _lightboxImages = [];
 let _lightboxIndex = 0;
 
+// Touch swipe support for lightbox — document-level (más confiable en mobile)
+let _lbTouchStartX = 0;
+let _lbTouchStartY = 0;
+
+function _lbOnTouchStart(e) {
+  _lbTouchStartX = e.touches[0].clientX;
+  _lbTouchStartY = e.touches[0].clientY;
+}
+
+function _lbOnTouchEnd(e) {
+  const dx = e.changedTouches[0].clientX - _lbTouchStartX;
+  const dy = e.changedTouches[0].clientY - _lbTouchStartY;
+  // Solo swipe horizontal con al menos 40px de desplazamiento
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+    lightboxNav(dx < 0 ? 1 : -1);
+  }
+}
+
 function openLightbox(index, propId) {
   const prop = getProperties().find(p => p.id === propId);
   if (!prop) return;
@@ -1148,6 +1291,9 @@ function openLightbox(index, propId) {
   if (!lb) return;
   lb.style.display = 'flex';
   document.body.style.overflow = 'hidden';
+  // Registrar swipe a nivel document
+  document.addEventListener('touchstart', _lbOnTouchStart, { passive: true });
+  document.addEventListener('touchend', _lbOnTouchEnd, { passive: true });
   renderLightbox();
 }
 
@@ -1155,6 +1301,8 @@ function closeLightbox() {
   const lb = document.getElementById('lightbox');
   if (lb) lb.style.display = 'none';
   document.body.style.overflow = '';
+  document.removeEventListener('touchstart', _lbOnTouchStart);
+  document.removeEventListener('touchend', _lbOnTouchEnd);
 }
 
 function lightboxNav(dir) {
@@ -1275,30 +1423,13 @@ function toggleMsgExpand(i) {
 
 // ===================== THEME =====================
 function initTheme() {
-  const saved = localStorage.getItem('gprb-theme') || 'dark';
-  applyTheme(saved, false);
+  // Siempre modo claro
+  document.body.classList.add('light-mode');
+  localStorage.removeItem('gprb-theme');
 }
 
-function toggleTheme() {
-  const isLight = document.body.classList.contains('light-mode');
-  applyTheme(isLight ? 'dark' : 'light', true);
-}
-
-function applyTheme(theme, animate) {
-  if (animate) {
-    document.body.style.transition = 'background 0.35s ease, color 0.35s ease';
-    setTimeout(() => { document.body.style.transition = ''; }, 400);
-  }
-  const isLight = theme === 'light';
-  document.body.classList.toggle('light-mode', isLight);
-  localStorage.setItem('gprb-theme', theme);
-
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
-
-  const btn = document.getElementById('themeToggle');
-  if (btn) btn.title = isLight ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro';
-}
+function toggleTheme() { /* modo oscuro eliminado */ }
+function applyTheme() { document.body.classList.add('light-mode'); }
 
 // ===================== UTILITY: CLEAN PHONE =====================
 function cleanPhone(phone) {

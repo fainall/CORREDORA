@@ -23,11 +23,11 @@
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Anti-flash: aplica tema guardado antes del primer paint -->
-  <script>try{if(localStorage.getItem('gprb-theme')==='light')document.body.classList.add('light-mode');}catch(e){}</script>
+  <!-- Siempre modo claro -->
+  <script>document.body.classList.add('light-mode');</script>
 
   <!-- Top Bar -->
   <div class="topbar">
@@ -66,10 +66,7 @@
         </a>
       </nav>
       <div class="header-actions">
-        <button type="button" class="header-icon-btn theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Cambiar tema" title="Modo oscuro / claro">
-          <i class="fas fa-sun" id="themeIcon"></i>
-        </button>
-        <a href="#" onclick="showPage('login'); return false;" class="header-icon-btn" id="navAdmin" aria-label="Admin"><i class="fas fa-user-shield"></i></a>
+<a href="#" onclick="showPage('login'); return false;" class="header-icon-btn" id="navAdmin" aria-label="Admin"><i class="fas fa-user-shield"></i></a>
         <button type="button" class="header-icon-btn" onclick="toggleHeaderSearch()" aria-label="Buscar"><i class="fas fa-search"></i></button>
         <a href="#" onclick="showPage('dashboard'); return false;" class="btn-add-property" id="btnAddProp" style="display:none;">
           <i class="fas fa-plus"></i> Agregar Propiedad
@@ -92,92 +89,75 @@
 
   <!-- ==================== PAGE: HOME ==================== -->
   <section id="page-home">
-    <!-- Mega Hero -->
-    <div class="mega-hero" id="heroSlider" role="region" aria-label="Portada GPRB">
-      <div class="slider-slides" id="sliderSlidesContainer"></div>
+    <!-- Hero Simple -->
+    <div class="hero-simple" id="heroSimple" role="region" aria-label="Portada GPRB">
+      <!-- Hidden slider containers (keep for dashboard editor) -->
+      <div id="sliderSlidesContainer" style="display:none;"></div>
+      <div id="sliderDots" style="display:none;"></div>
 
-      <!-- Slider controls -->
-      <button type="button" class="slider-btn slider-prev" onclick="changeSlide(-1)" aria-label="Slide anterior"><i class="fas fa-chevron-left"></i></button>
-      <button type="button" class="slider-btn slider-next" onclick="changeSlide(1)" aria-label="Siguiente slide"><i class="fas fa-chevron-right"></i></button>
+      <!-- Background -->
+      <div class="hero-bg" id="heroBg" style="background-image:url('https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&q=85')"></div>
+      <div class="hero-overlay"></div>
 
-      <!-- Rotating Video Badge -->
-      <a href="#" onclick="showPage('contact'); return false;" class="video-badge" aria-label="Ver intro">
-        <svg viewBox="0 0 100 100" class="video-badge-text">
-          <defs>
-            <path id="circlePath" d="M 50,50 m -36,0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0"/>
-          </defs>
-          <text><textPath href="#circlePath">GPRB • INDUSTRIAL • CHILE • GPRB • INDUSTRIAL • CHILE • </textPath></text>
-        </svg>
-        <span class="video-badge-play"><i class="fas fa-play"></i></span>
-      </a>
+      <!-- Two-column layout -->
+      <div class="container hero-simple-inner">
 
-      <!-- Foreground Content -->
-      <div class="mega-hero-fg">
-        <div class="container">
-          <!-- Title + Search Card sit here but title is rendered in slider; this is the search card overlay -->
-          <div class="hero-search-card">
-            <div class="search-tabs" role="tablist">
-              <button type="button" class="search-tab active" data-tab="all" onclick="switchSearchTab('all')">General</button>
-              <button type="button" class="search-tab" data-tab="Bodega" onclick="switchSearchTab('Bodega')">Bodega</button>
-              <button type="button" class="search-tab" data-tab="Oficina" onclick="switchSearchTab('Oficina')">Oficina</button>
-              <button type="button" class="search-tab" data-tab="Industrial" onclick="switchSearchTab('Industrial')">Industrial</button>
-            </div>
-            <div class="search-fields">
-              <div class="search-field">
-                <label>Palabra Clave</label>
-                <input type="text" id="heroSearch" placeholder="¿Qué buscas?">
-              </div>
-              <div class="search-field">
-                <label>Categoría</label>
-                <div class="select-wrap">
-                  <select id="heroType">
-                    <option value="">Seleccionar categoría</option>
-                    <option value="Departamento">Departamento</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Oficina">Oficina</option>
-                    <option value="Bodega">Bodega</option>
-                    <option value="Industrial">Industrial</option>
-                    <option value="Local">Local</option>
-                    <option value="Parcela">Parcela</option>
-                    <option value="Terreno">Terreno</option>
-                  </select>
-                </div>
-              </div>
-              <div class="search-field">
-                <label>Ubicación</label>
-                <div class="input-with-icon">
-                  <input type="text" id="heroLocation" placeholder="Ciudad o comuna">
-                  <i class="fas fa-crosshairs"></i>
-                </div>
-              </div>
-              <div class="search-field search-field-auto">
-                <label>&nbsp;</label>
-                <div class="search-actions">
-                  <select id="heroStatus" class="search-more">
-                    <option value="">Todas</option>
-                    <option value="Venta">Venta</option>
-                    <option value="Arriendo">Arriendo</option>
-                  </select>
-                  <button type="button" class="btn-search-primary" onclick="performHeroSearch()">
-                    <i class="fas fa-search"></i> Buscar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Pills -->
+        <!-- Left: title + desc + pills -->
+        <div class="hero-left">
+          <span class="hero-tag">GPRB · Propiedades Industriales</span>
+          <h1 class="hero-h1" id="heroTitle">Gestión Inmobiliaria<br><span class="hero-accent">Industrial</span></h1>
+          <p class="hero-desc" id="heroSubtitle">Especialistas en bodegas, galpones, terrenos y propiedades industriales en Chile.</p>
           <div class="quick-pills">
-            <button type="button" class="quick-pill" onclick="filterByType('Industrial')">Industrial <i class="fas fa-arrow-right"></i></button>
-            <button type="button" class="quick-pill" onclick="filterByType('Bodega')">Bodegas <i class="fas fa-arrow-right"></i></button>
-            <button type="button" class="quick-pill" onclick="filterByStatus('Venta')">Ventas <i class="fas fa-arrow-right"></i></button>
-            <button type="button" class="quick-pill" onclick="filterByStatus('Arriendo')">Arriendos <i class="fas fa-arrow-right"></i></button>
+            <button type="button" class="quick-pill" onclick="filterByType('Industrial')"><i class="fas fa-industry"></i> Galpones</button>
+            <button type="button" class="quick-pill" onclick="filterByType('Terreno')"><i class="fas fa-map-marked-alt"></i> Terrenos</button>
+            <button type="button" class="quick-pill" onclick="filterByType('Local')"><i class="fas fa-store"></i> Comerciales</button>
+            <button type="button" class="quick-pill" onclick="filterByType('Bodega')"><i class="fas fa-warehouse"></i> Bodegas</button>
           </div>
         </div>
-      </div>
 
-      <!-- Slider dots at bottom -->
-      <div class="slider-dots" id="sliderDots" role="tablist"></div>
+        <!-- Right: search card -->
+        <div class="hero-search-simple">
+          <div class="hss-field">
+            <label><i class="fas fa-exchange-alt"></i> Operación</label>
+            <div class="select-wrap">
+              <select id="heroStatus">
+                <option value="">Venta y Arriendo</option>
+                <option value="Venta">Venta</option>
+                <option value="Arriendo">Arriendo</option>
+              </select>
+            </div>
+          </div>
+          <div class="hss-field">
+            <label><i class="fas fa-building"></i> Tipo de Propiedad</label>
+            <div class="select-wrap">
+              <select id="heroType">
+                <option value="">Todas las categorías</option>
+                <option value="Bodega">Bodega</option>
+                <option value="Industrial">Galpón Industrial</option>
+                <option value="Oficina">Oficina</option>
+                <option value="Terreno">Terreno</option>
+                <option value="Local">Local Comercial</option>
+                <option value="Parcela">Parcela</option>
+              </select>
+            </div>
+          </div>
+          <div class="hss-field">
+            <label><i class="fas fa-map-marker-alt"></i> Comuna / Ubicación</label>
+            <div class="input-with-icon">
+              <input type="text" id="heroLocation" placeholder="Ciudad o comuna">
+              <i class="fas fa-crosshairs"></i>
+            </div>
+          </div>
+          <div class="hss-field">
+            <label><i class="fas fa-hashtag"></i> Código Propiedad</label>
+            <input type="text" id="heroSearch" placeholder="Ej: BDG-001">
+          </div>
+          <button type="button" class="hss-btn" onclick="performHeroSearch()">
+            <i class="fas fa-search"></i> Buscar
+          </button>
+        </div>
+
+      </div>
     </div>
 
     <!-- Stats -->
@@ -202,169 +182,55 @@
       </div>
     </div>
 
-    <!-- Featured Properties -->
-    <div class="section section-dark">
+    <!-- Propiedades Destacadas: cinta deslizante -->
+    <div class="section section-props-home" id="sectionDestacadas">
       <div class="container">
-        <div class="section-header section-header-center">
-          <span class="section-tag">Propiedades Premium</span>
-          <h2>Destacadas <span class="accent">de la Semana</span></h2>
-          <p>Las mejores opciones en gestión inmobiliaria industrial</p>
+        <div class="section-header-home">
+          <div>
+            <span class="section-tag">Selección Premium</span>
+            <h2>Propiedades <span class="accent">Destacadas</span></h2>
+          </div>
+          <button class="btn-ver-todas" onclick="showPage('listings')">Ver todas <i class="fas fa-arrow-right"></i></button>
         </div>
         <div class="properties-grid" id="featuredGrid"></div>
-        <div class="section-footer">
-          <button class="btn btn-hero" onclick="showPage('listings')">Ver Todas las Propiedades <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Propiedades en Arriendo -->
+    <div class="section section-props-home" id="sectionArriendo">
+      <div class="container">
+        <div class="section-header-home">
+          <div>
+            <span class="section-tag">Disponibles ahora</span>
+            <h2>Propiedades en <span class="accent">Arriendo</span></h2>
+          </div>
+          <button class="btn-ver-todas" onclick="filterByStatus('Arriendo')">Ver todas <i class="fas fa-arrow-right"></i></button>
+        </div>
+        <div class="properties-grid" id="arriendoGrid"></div>
+        <div id="arriendoEmpty" class="home-empty" style="display:none;">
+          <i class="fas fa-building"></i><p>No hay propiedades en arriendo disponibles.</p>
         </div>
       </div>
     </div>
 
-    <!-- Categories -->
-    <div class="section section-darker">
+    <!-- Propiedades en Venta -->
+    <div class="section section-props-home section-props-home--alt" id="sectionVenta">
       <div class="container">
-        <div class="section-header section-header-center">
-          <span class="section-tag">Propiedades por Tipo</span>
-          <h2>Explora <span class="accent">Categorías</span></h2>
-          <p>Encuentra la propiedad que necesitas</p>
+        <div class="section-header-home">
+          <div>
+            <span class="section-tag">Oportunidades</span>
+            <h2>Propiedades en <span class="accent">Venta</span></h2>
+          </div>
+          <button class="btn-ver-todas" onclick="filterByStatus('Venta')">Ver todas <i class="fas fa-arrow-right"></i></button>
         </div>
-        <div class="categories-grid">
-          <div class="category-card" onclick="filterByType('Departamento')">
-            <div class="cat-icon"><i class="fas fa-building"></i></div>
-            <div class="cat-body">
-              <h3>Departamentos</h3>
-              <span class="cat-count"><span id="catDep">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card" onclick="filterByType('Casa')">
-            <div class="cat-icon"><i class="fas fa-home"></i></div>
-            <div class="cat-body">
-              <h3>Casas</h3>
-              <span class="cat-count"><span id="catCasa">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card" onclick="filterByType('Oficina')">
-            <div class="cat-icon"><i class="fas fa-briefcase"></i></div>
-            <div class="cat-body">
-              <h3>Oficinas</h3>
-              <span class="cat-count"><span id="catOfi">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card category-card-featured" onclick="filterByType('Bodega')">
-            <div class="cat-icon"><i class="fas fa-warehouse"></i></div>
-            <div class="cat-body">
-              <h3>Bodegas</h3>
-              <span class="cat-count"><span id="catBod">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card category-card-featured" onclick="filterByType('Industrial')">
-            <div class="cat-icon"><i class="fas fa-industry"></i></div>
-            <div class="cat-body">
-              <h3>Industriales</h3>
-              <span class="cat-count"><span id="catInd">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card" onclick="filterByType('Local')">
-            <div class="cat-icon"><i class="fas fa-store"></i></div>
-            <div class="cat-body">
-              <h3>Locales</h3>
-              <span class="cat-count"><span id="catLoc">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card" onclick="filterByType('Parcela')">
-            <div class="cat-icon"><i class="fas fa-square"></i></div>
-            <div class="cat-body">
-              <h3>Parcelas</h3>
-              <span class="cat-count"><span id="catPar">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
-          <div class="category-card" onclick="filterByType('Terreno')">
-            <div class="cat-icon"><i class="fas fa-mountain"></i></div>
-            <div class="cat-body">
-              <h3>Terrenos</h3>
-              <span class="cat-count"><span id="catTer">0</span> propiedades</span>
-            </div>
-            <span class="cat-arrow"><i class="fas fa-arrow-right"></i></span>
-          </div>
+        <div class="properties-grid" id="ventaGrid"></div>
+        <div id="ventaEmpty" class="home-empty" style="display:none;">
+          <i class="fas fa-building"></i><p>No hay propiedades en venta disponibles.</p>
         </div>
       </div>
     </div>
 
-    <!-- About Section -->
-    <div class="section section-about">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-media">
-            <div class="about-image-main">
-              <img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80" alt="Gestión Inmobiliaria Industrial GPRB" loading="lazy">
-            </div>
-            <div class="about-image-sub">
-              <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&q=80" alt="Oficinas industriales" loading="lazy">
-            </div>
-            <div class="about-experience-badge">
-              <span class="experience-number">10<sup>+</sup></span>
-              <span class="experience-label">Años de<br>Experiencia</span>
-            </div>
-            <div class="about-floating-chip">
-              <div class="chip-icon"><i class="fas fa-award"></i></div>
-              <div>
-                <strong>Calidad Certificada</strong>
-                <span>Propiedades verificadas</span>
-              </div>
-            </div>
-          </div>
-          <div class="about-content">
-            <span class="section-tag">Sobre Nosotros</span>
-            <h2>Expertos en <span class="accent">Gestión Industrial</span></h2>
-            <p class="about-intro">Somos especialistas en gestión inmobiliaria industrial con amplia experiencia en el mercado chileno. Conectamos propietarios e inversionistas con las mejores propiedades industriales disponibles a nivel nacional.</p>
-            <div class="about-features">
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-shield-check"></i></div>
-                <div>
-                  <h4>Propiedades Verificadas</h4>
-                  <p>Cada inmueble pasa por estrictos controles de calidad y documentación legal.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-user-tie"></i></div>
-                <div>
-                  <h4>Asesoramiento Profesional</h4>
-                  <p>Equipo especializado en el sector industrial con conocimiento del mercado.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-handshake"></i></div>
-                <div>
-                  <h4>Transacciones Seguras</h4>
-                  <p>Procesos transparentes y soporte completo en cada operación.</p>
-                </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
-                <div>
-                  <h4>Cobertura Nacional</h4>
-                  <p>Presencia en las principales zonas industriales de Chile.</p>
-                </div>
-              </div>
-            </div>
-            <div class="about-cta">
-              <button type="button" class="btn-hero" onclick="showPage('listings')"><i class="fas fa-search"></i> Ver Propiedades</button>
-              <a href="tel:+56941709793" class="about-call">
-                <span class="call-icon"><i class="fas fa-phone"></i></span>
-                <div>
-                  <span class="call-label">Llámanos ahora</span>
-                  <strong>+56 9 4170 9793</strong>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
     <!-- CTA Contact Section -->
     <div class="section section-contact-cta">
@@ -804,7 +670,7 @@
                   <input type="hidden" id="fImage">
                   <div class="img-uploader-empty" id="mainUploaderEmpty" onclick="document.getElementById('fMainImageFile').click()">
                     <i class="fas fa-cloud-upload-alt"></i>
-                    <span>Click para seleccionar imagen</span>
+                    <span>Haz clic o arrastra una imagen aquí</span>
                     <small>JPG, PNG, WEBP — máx 10MB</small>
                   </div>
                   <div class="img-uploader-preview" id="mainUploaderPreview" style="display:none">
@@ -819,17 +685,30 @@
                     </div>
                   </div>
                 </div>
+                <div class="uploader-alt-row">
+                  <span>o también:</span>
+                  <button type="button" class="btn-url-input" onclick="promptMainImageUrl()"><i class="fas fa-link"></i> Pegar URL</button>
+                </div>
               </div>
 
               <div class="form-group full-width">
                 <label>Galería (imágenes adicionales)</label>
-                <div class="img-uploader">
+                <div class="img-uploader" id="galleryUploader">
                   <input type="file" id="fGalleryFiles" accept="image/*" multiple style="display:none" onchange="handleGalleryChange(event)">
                   <input type="hidden" id="fGallery">
                   <div class="gallery-preview-grid" id="galleryPreviewGrid"></div>
-                  <button type="button" class="btn-add-gallery" onclick="document.getElementById('fGalleryFiles').click()">
-                    <i class="fas fa-plus"></i> Agregar imágenes
-                  </button>
+                  <div class="gallery-uploader-hint" id="galleryHint">
+                    <i class="fas fa-images"></i>
+                    <span>Arrastra imágenes aquí o usa los botones</span>
+                  </div>
+                  <div class="gallery-btn-row">
+                    <button type="button" class="btn-add-gallery" onclick="document.getElementById('fGalleryFiles').click()">
+                      <i class="fas fa-plus"></i> Subir archivo
+                    </button>
+                    <button type="button" class="btn-add-gallery btn-url-gallery" onclick="addGalleryUrl()">
+                      <i class="fas fa-link"></i> Pegar URL
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -941,6 +820,7 @@
     </div>
     <button class="lb-nav lb-next" onclick="lightboxNav(1)"><i class="fas fa-chevron-right"></i></button>
     <div class="lb-counter" id="lightboxCounter">1 / 1</div>
+    <div class="lb-swipe-hint"><i class="fas fa-arrows-left-right"></i> Desliza para navegar</div>
   </div>
 
   <!-- Floating Action Buttons -->
