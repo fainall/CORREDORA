@@ -364,43 +364,188 @@ function attachSliderKeyboard() {
   });
 }
 
+// ===================== SLIDE IMAGE STATES =====================
+// Array of { kind: 'url'|'file', value, previewUrl } per slide index
+let _slideImageStates = [];
+
+function initSlideImageState(idx, bgUrl) {
+  _slideImageStates[idx] = bgUrl
+    ? { kind: 'url', value: bgUrl, previewUrl: bgUrl }
+    : null;
+}
+
+function handleSlideImageChange(e, idx) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) { showToast('La imagen no puede superar 10MB'); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    _slideImageStates[idx] = { kind: 'file', value: file, previewUrl: reader.result };
+    renderSlideImagePreview(idx);
+  };
+  reader.readAsDataURL(file);
+}
+
+function setSlideImageFromUrl(idx, url) {
+  if (!url) return;
+  _slideImageStates[idx] = { kind: 'url', value: url, previewUrl: url };
+  renderSlideImagePreview(idx);
+}
+
+function clearSlideImage(idx) {
+  _slideImageStates[idx] = null;
+  const fileInput = document.getElementById(`slideImgFile_${idx}`);
+  if (fileInput) fileInput.value = '';
+  renderSlideImagePreview(idx);
+}
+
+function promptSlideImageUrl(idx) {
+  const current = _slideImageStates[idx];
+  const url = window.prompt('Pega la URL de la imagen de fondo:', current && current.kind === 'url' ? current.value : '');
+  if (url && url.trim()) setSlideImageFromUrl(idx, url.trim());
+}
+
+function renderSlideImagePreview(idx) {
+  const state = _slideImageStates[idx];
+  const emptyEl  = document.getElementById(`slideUploaderEmpty_${idx}`);
+  const previewEl = document.getElementById(`slideUploaderPreview_${idx}`);
+  const imgEl    = document.getElementById(`slidePreviewImg_${idx}`);
+  if (!emptyEl || !previewEl || !imgEl) return;
+  if (state && state.previewUrl) {
+    emptyEl.style.display = 'none';
+    previewEl.style.display = 'block';
+    imgEl.src = state.previewUrl;
+  } else {
+    emptyEl.style.display = 'flex';
+    previewEl.style.display = 'none';
+    imgEl.src = '';
+  }
+}
+
+function initSlideUploaderDragDrop(idx) {
+  const uploader = document.getElementById(`slideUploader_${idx}`);
+  if (!uploader) return;
+  uploader.addEventListener('dragover', e => { e.preventDefault(); uploader.classList.add('drag-over'); });
+  uploader.addEventListener('dragleave', e => { if (!uploader.contains(e.relatedTarget)) uploader.classList.remove('drag-over'); });
+  uploader.addEventListener('drop', e => {
+    e.preventDefault();
+    uploader.classList.remove('drag-over');
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      if (file.size > 10 * 1024 * 1024) { showToast('La imagen no puede superar 10MB'); return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        _slideImageStates[idx] = { kind: 'file', value: file, previewUrl: reader.result };
+        renderSlideImagePreview(idx);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const text = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/uri-list');
+      if (text && /^https?:\/\//i.test(text)) setSlideImageFromUrl(idx, text.trim());
+    }
+  });
+}
+
 function renderSliderEditor() {
   const data = getSliderData();
   const container = document.getElementById('sliderEditorForms');
   if (!container) return;
+
   container.innerHTML = data.slides.map((s, i) => `
     <div class="slide-editor-card">
       <h4><span class="slide-num">${i + 1}</span> Slide ${i + 1}</h4>
       <div class="form-grid">
+
         <div class="form-group full-width">
-          <label>URL de la Imagen</label>
-          <input type="url" data-slide-idx="${i}" data-slide-field="bgUrl" value="${escapeAttr(s.bgUrl)}" placeholder="https://...">
+          <label>Imagen de Fondo</label>
+          <div class="img-uploader slide-img-uploader" id="slideUploader_${i}">
+            <input type="file" id="slideImgFile_${i}" accept="image/*" style="display:none"
+              onchange="handleSlideImageChange(event, ${i})">
+            <div class="img-uploader-empty" id="slideUploaderEmpty_${i}"
+              onclick="document.getElementById('slideImgFile_${i}').click()"
+              style="min-height:140px;">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Haz clic o arrastra una imagen aquí</span>
+              <small>JPG, PNG, WEBP — máx 10MB</small>
+            </div>
+            <div class="img-uploader-preview slide-img-preview" id="slideUploaderPreview_${i}" style="display:none">
+              <img id="slidePreviewImg_${i}" alt="Preview slide ${i + 1}">
+              <div class="img-uploader-actions">
+                <button type="button" class="btn-img-change"
+                  onclick="document.getElementById('slideImgFile_${i}').click()">
+                  <i class="fas fa-sync-alt"></i> Cambiar
+                </button>
+                <button type="button" class="btn-img-remove" onclick="clearSlideImage(${i})">
+                  <i class="fas fa-trash"></i> Quitar
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="uploader-alt-row">
+            <span>o también:</span>
+            <button type="button" class="btn-url-input" onclick="promptSlideImageUrl(${i})">
+              <i class="fas fa-link"></i> Pegar URL
+            </button>
+          </div>
         </div>
+
         <div class="form-group">
           <label>Etiqueta (chip)</label>
-          <input type="text" data-slide-idx="${i}" data-slide-field="tag" value="${escapeAttr(s.tag || '')}" maxlength="40">
+          <input type="text" data-slide-idx="${i}" data-slide-field="tag"
+            value="${escapeAttr(s.tag || '')}" maxlength="40" placeholder="Ej: Bodega Industrial">
         </div>
         <div class="form-group">
           <label>Título</label>
-          <input type="text" data-slide-idx="${i}" data-slide-field="title" value="${escapeAttr(s.title)}" maxlength="100">
+          <input type="text" data-slide-idx="${i}" data-slide-field="title"
+            value="${escapeAttr(s.title)}" maxlength="100" placeholder="Título principal del hero">
         </div>
         <div class="form-group full-width">
           <label>Subtítulo</label>
-          <input type="text" data-slide-idx="${i}" data-slide-field="subtitle" value="${escapeAttr(s.subtitle)}" maxlength="150">
+          <input type="text" data-slide-idx="${i}" data-slide-field="subtitle"
+            value="${escapeAttr(s.subtitle)}" maxlength="150" placeholder="Descripción breve">
         </div>
       </div>
     </div>
   `).join('');
+
+  // Init states and drag-drop for each slide
+  data.slides.forEach((s, i) => {
+    initSlideImageState(i, s.bgUrl);
+    renderSlideImagePreview(i);
+    setTimeout(() => initSlideUploaderDragDrop(i), 50);
+  });
 }
 
 async function saveSliderChanges() {
   const data = getSliderData();
+
+  // Read text fields
   document.querySelectorAll('[data-slide-idx]').forEach(input => {
     const idx = parseInt(input.dataset.slideIdx);
     const field = input.dataset.slideField;
     if (data.slides[idx]) data.slides[idx][field] = input.value.trim();
   });
+
+  const btn = document.querySelector('#dashPanelSliderEdit .btn-primary');
+  const btnOriginal = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo imágenes...'; }
+
   try {
+    // Upload any new files and resolve bgUrls
+    for (let i = 0; i < data.slides.length; i++) {
+      const state = _slideImageStates[i];
+      if (!state) continue;
+      if (state.kind === 'file') {
+        if (btn) btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo slide ${i + 1}...`;
+        data.slides[i].bgUrl = await window.GPRB_SB.uploadImage(state.value);
+        // Update state to url so re-renders work
+        _slideImageStates[i] = { kind: 'url', value: data.slides[i].bgUrl, previewUrl: data.slides[i].bgUrl };
+      } else if (state.kind === 'url') {
+        data.slides[i].bgUrl = state.value;
+      }
+    }
+
+    if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
     const saved = await window.GPRB_SB.saveSlides(data.slides);
     _sliderCache = { slides: saved };
     renderSlider();
@@ -408,6 +553,8 @@ async function saveSliderChanges() {
     showToast('Portada actualizada correctamente');
   } catch (e) {
     showToast('Error al guardar: ' + (e.message || 'intenta de nuevo'));
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = btnOriginal; }
   }
 }
 
