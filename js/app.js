@@ -10,102 +10,220 @@ const ADMIN_PASS = 'admin123';
 const FALLBACK_IMG = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23e8ecef' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%2399a3ad' text-anchor='middle' dy='.3em'%3EImagen no disponible%3C/text%3E%3C/svg%3E";
 
 const defaultProperties = [
+  // ── ARRIENDOS ──────────────────────────────────────────────────────
   {
-    id: 1,
-    title: 'Bodega Industrial Providencia',
-    type: 'Bodega',
-    status: 'Venta',
-    price: 85000000,
-    location: 'Providencia, Santiago',
-    address: 'Av. Providencia 1500',
-    area: 450,
-    usableArea: 400,
-    bathrooms: 2,
-    parking: 4,
+    id: 2,
+    title: 'Galpón Industrial Pudahuel',
+    type: 'Galpon',
+    status: 'Arriendo',
+    price: 4800000,
+    location: 'Pudahuel, Santiago',
+    address: 'Av. Americo Vespucio Norte 1240',
+    area: 1200,
+    usableArea: 1050,
+    bathrooms: 3,
+    parking: 8,
     warehouseType: 'Cerrada',
-    privateRooms: 0,
-    age: 5,
-    height: 6,
-    floorSupport: 5,
+    privateRooms: 2,
+    age: 6,
+    height: 9,
+    floorSupport: 8,
     platforms: 'Si',
-    pricePerM2: 188888,
-    propertyCode: 'BDG-001',
-    image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
+    pricePerM2: 4000,
+    propertyCode: 'IND-001',
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
     gallery: [
+      'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
+      'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80',
       'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
-      'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80'
+      'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80'
     ],
-    description: 'Bodega industrial cerrada con excelentes caracteristicas. Piso de hormigon resistente, acceso de carga y descarga, oficinas internas. Ubicacion estrategica en Providencia.',
-    services: ['Internet', 'Agua', 'Luz'],
-    amenities: ['Aire', 'Generador'],
-    security: ['Alarma', 'Incendio'],
+    description: 'Galpón industrial de primer nivel ubicado en el corredor logístico de Pudahuel, a 5 minutos del Aeropuerto Internacional. Cuenta con piso de hormigón reforzado, altura libre de 9 metros, 2 andenes de carga y oficinas administrativas integradas. Acceso para camiones de alto tonelaje, iluminación LED de alta eficiencia y sistema contra incendios certificado. Ideal para distribución, manufactura liviana o centro de acopio.',
+    services: ['Internet Fibra', 'Agua Industrial', 'Luz Trifásica', 'Gas Natural'],
+    amenities: ['Aire Acondicionado', 'Generador Emergencia', 'Montacargas', 'Comedor Personal'],
+    security: ['CCTV 24/7', 'Alarma Perimetral', 'Sistema Incendio', 'Guardia Permanente'],
     agentName: 'Giancarlo GPRB',
     agentPhone: '+56 9 4170 9793',
     agentEmail: 'giancarlo@gprb.cl'
   },
   {
-    id: 2,
-    title: 'Oficina Ejecutiva Centro',
+    id: 11,
+    title: 'Bodega Refrigerada Quilicura',
+    type: 'Bodega',
+    status: 'Arriendo',
+    price: 6200000,
+    location: 'Quilicura, Santiago',
+    address: 'Av. El Salto 5380, Quilicura',
+    area: 980,
+    usableArea: 900,
+    bathrooms: 2,
+    parking: 6,
+    warehouseType: 'Cerrada',
+    privateRooms: 1,
+    age: 3,
+    height: 7,
+    floorSupport: 6,
+    platforms: 'Si',
+    pricePerM2: 6326,
+    propertyCode: 'BOD-002',
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80',
+      'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
+      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80'
+    ],
+    description: 'Bodega de temperatura controlada con cámara frigorífica de última generación. Equipada con sistema de refrigeración industrial redundante, pisos epóxicos antideslizantes y certificación sanitaria vigente. Perfecta para la industria alimentaria, farmacéutica o de distribución de productos perecibles. Ubicada en parque industrial cerrado con vigilancia 24/7 y fácil acceso a Ruta 5 Norte.',
+    services: ['Agua Potable', 'Luz Trifásica', 'Internet Dedicado', 'Agua Industrial'],
+    amenities: ['Refrigeración Industrial', 'Cámara Frigorífica', 'Aire Acondicionado', 'Generador'],
+    security: ['CCTV 24/7', 'Alarma Central', 'Control Acceso', 'Sistema Incendio'],
+    agentName: 'Giancarlo GPRB',
+    agentPhone: '+56 9 4170 9793',
+    agentEmail: 'giancarlo@gprb.cl'
+  },
+  {
+    id: 4,
+    title: 'Oficina Ejecutiva Providencia',
     type: 'Oficina',
     status: 'Arriendo',
-    price: 2500000,
-    location: 'Centro, Santiago',
-    address: 'Ahumada 250',
-    area: 120,
-    usableArea: 110,
+    price: 1950000,
+    location: 'Providencia, Santiago',
+    address: 'Antonio Bellet 193, Of. 1210',
+    area: 145,
+    usableArea: 130,
     bathrooms: 2,
     parking: 2,
     warehouseType: null,
-    privateRooms: 3,
-    age: 8,
+    privateRooms: 4,
+    age: 10,
     height: 3,
     floorSupport: 3,
     platforms: 'No',
-    pricePerM2: 20833333,
-    propertyCode: 'OFC-001',
+    pricePerM2: 13448,
+    propertyCode: 'OFI-003',
+    featured: false,
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
     gallery: [
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
       'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80',
-      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80'
+      'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80',
+      'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'
     ],
-    description: 'Moderna oficina ejecutiva con acabados premium. Climatizacion central, vista a la ciudad, zonas colaborativas y privadas.',
-    services: ['Internet', 'Agua', 'Gas', 'Luz', 'Telefonica'],
-    amenities: ['Aire', 'Calefaccion'],
-    security: ['Alarma', 'Conserjeria'],
+    description: 'Espléndida oficina ejecutiva en edificio clase A en el corazón de Providencia. Layout flexible con 4 salas privadas, sala de reuniones equipada, recepción y cocina ejecutiva. Edificio con certificación LEED, estacionamientos propios, gimnasio y casino. A pasos del metro Manuel Montt, rodeado de restaurantes y servicios. Ideal para empresa de servicios profesionales o corporación financiera.',
+    services: ['Internet Fibra 1Gbps', 'Agua', 'Luz', 'Gas', 'Teléfono'],
+    amenities: ['Aire Acondicionado Central', 'Calefacción', 'Sala Reuniones', 'Cocina Ejecutiva'],
+    security: ['Conserjería 24/7', 'CCTV', 'Alarma', 'Control Acceso Biométrico'],
+    agentName: 'Giancarlo GPRB',
+    agentPhone: '+56 9 4170 9793',
+    agentEmail: 'giancarlo@gprb.cl'
+  },
+  // ── VENTAS ─────────────────────────────────────────────────────────
+  {
+    id: 1,
+    title: 'Terreno Industrial Lampa',
+    type: 'Terreno',
+    status: 'Venta',
+    price: 480000000,
+    location: 'Lampa, Región Metropolitana',
+    address: 'Ruta 57 Km 28, Parque Industrial Lampa',
+    area: 8500,
+    usableArea: 8000,
+    bathrooms: 0,
+    parking: 20,
+    warehouseType: 'Abierta',
+    privateRooms: 0,
+    age: 1,
+    height: 0,
+    floorSupport: 0,
+    platforms: 'Si',
+    pricePerM2: 56470,
+    propertyCode: 'TER-004',
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
+      'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
+      'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
+      'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80'
+    ],
+    description: 'Gran terreno industrial con uso de suelo I2 en Parque Industrial Lampa, uno de los polos logísticos de mayor crecimiento en Chile. Terreno plano, completamente urbanizado, con acceso directo a Ruta 57 (Colina–Los Andes). Cuenta con factibilidades de agua, luz trifásica y alcantarillado industrial. Ideal para construir planta industrial, centro de distribución o bodega a la medida.',
+    services: ['Luz Trifásica Disponible', 'Agua Disponible', 'Alcantarillado Industrial'],
+    amenities: ['Acceso Camiones Doble Tracción', 'Portería'],
+    security: ['Perímetro Cercado', 'Guardia Acceso'],
     agentName: 'Giancarlo GPRB',
     agentPhone: '+56 9 4170 9793',
     agentEmail: 'giancarlo@gprb.cl'
   },
   {
     id: 3,
-    title: 'Terreno Industrial Zona Franca',
-    type: 'Terreno',
+    title: 'Galpón con Oficinas Maipú',
+    type: 'Galpon',
     status: 'Venta',
-    price: 250000000,
-    location: 'Zona Franca, Valparaiso',
-    address: 'Km 11 Ruta 5 Sur',
-    area: 5000,
-    usableArea: 4500,
-    bathrooms: 1,
-    parking: 10,
-    warehouseType: 'Abierta',
-    privateRooms: 0,
-    age: 2,
-    height: 8,
+    price: 320000000,
+    location: 'Maipú, Santiago',
+    address: 'Av. Pajaritos 7800, Maipú',
+    area: 2200,
+    usableArea: 1900,
+    bathrooms: 4,
+    parking: 15,
+    warehouseType: 'Cerrada',
+    privateRooms: 6,
+    age: 8,
+    height: 10,
     floorSupport: 10,
     platforms: 'Si',
-    pricePerM2: 50000000,
-    propertyCode: 'TRR-001',
-    image: 'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
+    pricePerM2: 145454,
+    propertyCode: 'IND-005',
+    featured: true,
+    image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
+      'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
+      'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80',
       'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80'
     ],
-    description: 'Amplio terreno industrial en zona franca con excelente acceso logistico. Ideal para plantas manufactureras, distribuidoras o centros de acopio.',
-    services: ['Agua', 'Luz'],
-    amenities: ['Generador'],
-    security: ['Alarma'],
+    description: 'Imponente galpón industrial en venta en la comuna de Maipú, con acceso privilegiado a Autopista del Sol y Vespucio Sur. Nave principal de 10 metros de altura libre con estructura metálica en excelente estado, 3 portones automáticos tipo seccional para camiones, piso de hormigón H-30 con sellador epóxico. Incluye cuerpo de oficinas de 300 m² con 6 salas, sala de reuniones, baños ejecutivos y casino. Uso I1/I2. Oportunidad para empresa en expansión.',
+    services: ['Luz Trifásica', 'Agua Potable e Industrial', 'Gas Natural', 'Internet Fibra'],
+    amenities: ['Grúa Puente 5 Ton', 'Montacargas', 'Generador 200 KVA', 'Comedor 80 Personas'],
+    security: ['CCTV 64 Cámaras', 'Alarma Perimetral', 'Sistema Incendio NFPA', 'Guardia 24/7'],
+    agentName: 'Giancarlo GPRB',
+    agentPhone: '+56 9 4170 9793',
+    agentEmail: 'giancarlo@gprb.cl'
+  },
+  {
+    id: 5,
+    title: 'Local Comercial Santiago Centro',
+    type: 'Local Comercial',
+    status: 'Venta',
+    price: 95000000,
+    location: 'Santiago Centro',
+    address: 'Morandé 835, Santiago',
+    area: 280,
+    usableArea: 260,
+    bathrooms: 2,
+    parking: 2,
+    warehouseType: null,
+    privateRooms: 2,
+    age: 15,
+    height: 4,
+    floorSupport: 4,
+    platforms: 'No',
+    pricePerM2: 339285,
+    propertyCode: 'LOC-006',
+    featured: false,
+    image: 'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
+      'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80',
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80'
+    ],
+    description: 'Excelente local comercial de esquina en pleno corazón de Santiago Centro, con altísimo flujo peatonal. Planta libre de 280 m² con techos de 4 metros, vitrinas panorámicas, dos accesos independientes y bodega subterránea de 40 m². Instalaciones eléctricas trifásicas, sistema de climatización central. Uso mixto comercial/oficinas. A metros de la Estación Baquedano y del eje Alameda. Propiedad en excelente estado de conservación.',
+    services: ['Internet Fibra', 'Agua', 'Luz Trifásica', 'Gas', 'Teléfono'],
+    amenities: ['Aire Acondicionado', 'Calefacción Central', 'Bodega', 'Vitrina LED'],
+    security: ['CCTV', 'Alarma Monitoreo', 'Control Acceso', 'Conserjería Edificio'],
     agentName: 'Giancarlo GPRB',
     agentPhone: '+56 9 4170 9793',
     agentEmail: 'giancarlo@gprb.cl'
@@ -152,7 +270,13 @@ async function loadPropertiesFromSB() {
   if (!window.GPRB_SB) return;
   try {
     const rows = await window.GPRB_SB.getProperties();
-    if (rows && rows.length > 0) _propertiesCache = rows;
+    if (rows && rows.length > 0) {
+      // Defaults take priority for their own IDs;
+      // SB contributes only entries with IDs not covered by defaults.
+      const defaultIds = new Set(defaultProperties.map(p => p.id));
+      const sbExtras = rows.filter(r => !defaultIds.has(r.id));
+      _propertiesCache = [...defaultProperties, ...sbExtras];
+    }
   } catch (e) { console.warn('loadPropertiesFromSB', e); }
 }
 
@@ -323,30 +447,45 @@ function formatHeroTitle(title) {
 }
 
 function changeSlide(dir) {
-  const slides = document.querySelectorAll('.slider-slide');
-  if (slides.length === 0) return;
-  goToSlide((currentSlide + dir + slides.length) % slides.length);
+  const data = getSliderData();
+  const total = data.slides ? data.slides.length : 1;
+  goToSlide((currentSlide + dir + total) % total);
   resetSliderAutoplay();
 }
 
 function goToSlide(index) {
-  const slides = document.querySelectorAll('.slider-slide');
+  // Update dots
   const dots = document.querySelectorAll('.slider-dot');
-
-  if (slides[currentSlide]) slides[currentSlide].classList.remove('active');
   if (dots[currentSlide]) dots[currentSlide].classList.remove('active');
-
   currentSlide = index;
-
-  if (slides[currentSlide]) slides[currentSlide].classList.add('active');
   if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+
+  // Fade-swap hero background: fade out → swap image → fade in
+  const data = getSliderData();
+  if (!data.slides || !data.slides[index]) return;
+  const url = data.slides[index].bgUrl;
+  const bg  = document.getElementById('heroBg');
+  if (bg) {
+    clearTimeout(goToSlide._t);
+    bg.style.opacity = '0';
+    goToSlide._t = setTimeout(() => {
+      bg.style.backgroundImage = `url('${escapeAttr(url)}')`;
+      bg.style.opacity = '1';
+    }, 700);
+  }
+  // Update hero text
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) heroTitle.innerHTML = formatHeroTitle(data.slides[index].title);
+  const heroSubtitle = document.getElementById('heroSubtitle');
+  if (heroSubtitle) heroSubtitle.textContent = data.slides[index].subtitle || '';
 }
 
 function startSliderAutoplay() {
   clearInterval(sliderInterval);
   sliderInterval = setInterval(() => {
-    const slides = document.querySelectorAll('.slider-slide');
-    if (slides.length > 1) goToSlide((currentSlide + 1) % slides.length);
+    const data = getSliderData();
+    const total = data.slides ? data.slides.length : 0;
+    if (total > 1) goToSlide((currentSlide + 1) % total);
   }, 5000);
 }
 
@@ -715,33 +854,55 @@ function renderDetail(propId) {
   const priceText = `$${prop.price.toLocaleString('es-CL')} CLP${prop.status === 'Arriendo' ? '/mes' : ''}`;
   const galleryImages = [prop.image, ...(prop.gallery || [])].filter(Boolean);
   const mainImg = galleryImages[0] || '';
-  const thumbs = [1,2,3,4].map(i => galleryImages[i] || mainImg);
+  // 5 thumbs visible + 1 counter slot (index 5)
+  const THUMB_COUNT = 5;
+  const thumbs = Array.from({length: THUMB_COUNT}, (_, i) => galleryImages[i + 1] || mainImg);
   const totalPhotos = galleryImages.length;
+  const hiddenCount = totalPhotos - (THUMB_COUNT + 1); // photos beyond what's shown
   const agentInitial = prop.agentName ? prop.agentName.charAt(0).toUpperCase() : 'G';
+  const statusLabel = prop.status === 'Venta' ? 'Venta' : 'Arriendo';
 
   document.getElementById('propertyDetail').innerHTML = `
     <div class="detail-hero">
+      <div class="container">
+        <div class="detail-header-row">
+          <div class="detail-header-left">
+            <a class="detail-back-top" onclick="showPage('listings')"><i class="fas fa-arrow-left"></i> Volver</a>
+            <h1 class="detail-title-top">${escapeHtml(prop.title)}
+              ${prop.featured ? '<span class="detail-badge-featured">Destacado</span>' : ''}
+            </h1>
+            <div class="detail-location-top"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(prop.location)}</div>
+          </div>
+          <div class="detail-header-right">
+            <div class="detail-price-top">${priceText}</div>
+            <span class="detail-status-badge ${prop.status === 'Venta' ? 'sale' : 'rent'}">${statusLabel}</span>
+          </div>
+        </div>
+      </div>
+
       <div class="detail-gallery-modern">
         <div class="dgm-main">
           <img src="${escapeHtml(mainImg)}" alt="${escapeHtml(prop.title)}" onerror="imgFallback(this)" onclick="openLightbox(0, ${prop.id})">
         </div>
         <div class="dgm-grid">
           ${thumbs.map((src, i) => `
-            <div class="dgm-thumb${i === 3 && totalPhotos > 5 ? ' dgm-thumb-more' : ''}">
+            <div class="dgm-thumb">
               <img src="${escapeHtml(src)}" alt="Foto ${i+2}" onerror="imgFallback(this)" onclick="openLightbox(${i+1}, ${prop.id})">
-              ${i === 3 && totalPhotos > 5 ? `<div class="dgm-more-overlay" onclick="openLightbox(${i+1}, ${prop.id})"><i class="fas fa-images"></i><span>+${totalPhotos - 4} fotos</span></div>` : ''}
             </div>
           `).join('')}
+          <div class="dgm-thumb dgm-thumb-more">
+            <img src="${escapeHtml(galleryImages[THUMB_COUNT + 1] || mainImg)}" alt="Más fotos" onerror="imgFallback(this)">
+            <div class="dgm-more-overlay" onclick="openLightbox(${THUMB_COUNT}, ${prop.id})">
+              <span class="dgm-more-count">+${Math.max(hiddenCount, totalPhotos > THUMB_COUNT + 1 ? totalPhotos - THUMB_COUNT : 0)}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="detail-content">
       <div class="container">
-        <a class="detail-back" onclick="showPage('listings')"><i class="fas fa-arrow-left"></i> Volver</a>
         <div class="detail-grid">
           <div class="detail-main">
-            <h1>${escapeHtml(prop.title)}</h1>
-            <div class="detail-location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(prop.location)}</div>
             <div class="detail-price-tag">${priceText}</div>
             <div class="detail-features">
               ${prop.area > 0 ? `<div class="detail-feature"><i class="fas fa-ruler-combined"></i><strong>${prop.area}m²</strong><span>Total</span></div>` : ''}
