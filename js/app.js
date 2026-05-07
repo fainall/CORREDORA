@@ -10,27 +10,35 @@ const ADMIN_PASS = 'admin123';
 const FALLBACK_IMG = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23e8ecef' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='20' fill='%2399a3ad' text-anchor='middle' dy='.3em'%3EImagen no disponible%3C/text%3E%3C/svg%3E";
 
 const defaultProperties = [
-  // ── ARRIENDOS ──────────────────────────────────────────────────────
+  // ── ARRIENDOS (precios en UF) ──────────────────────────────────────
   {
     id: 2,
     title: 'Galpón Industrial Pudahuel',
     type: 'Galpon',
     status: 'Arriendo',
-    price: 4800000,
+    price: 120,
+    priceUnit: 'UF',
+    gastosComunes: 8,
+    gastosComunesUnit: 'UF',
     location: 'Pudahuel, Santiago',
     address: 'Av. Americo Vespucio Norte 1240',
     area: 1200,
+    areaBodega: 1050,
+    areaOficina: 120,
+    areaAltillo: null,
     usableArea: 1050,
     bathrooms: 3,
     parking: 8,
+    portones: 3,
+    andenes: 2,
     warehouseType: 'Cerrada',
     privateRooms: 2,
     age: 6,
     height: 9,
     floorSupport: 8,
-    platforms: 'Si',
-    pricePerM2: 4000,
+    pricePerM2: 0.1,
     propertyCode: 'IND-001',
+    portalCode: null,
     featured: true,
     image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
     gallery: [
@@ -39,34 +47,40 @@ const defaultProperties = [
       'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
       'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80'
     ],
-    description: 'Galpón industrial de primer nivel ubicado en el corredor logístico de Pudahuel, a 5 minutos del Aeropuerto Internacional. Cuenta con piso de hormigón reforzado, altura libre de 9 metros, 2 andenes de carga y oficinas administrativas integradas. Acceso para camiones de alto tonelaje, iluminación LED de alta eficiencia y sistema contra incendios certificado. Ideal para distribución, manufactura liviana o centro de acopio.',
-    services: ['Internet Fibra', 'Agua Industrial', 'Luz Trifásica', 'Gas Natural'],
-    amenities: ['Aire Acondicionado', 'Generador Emergencia', 'Montacargas', 'Comedor Personal'],
-    security: ['CCTV 24/7', 'Alarma Perimetral', 'Sistema Incendio', 'Guardia Permanente'],
-    agentName: 'Giancarlo GPRB',
-    agentPhone: '+56 9 4170 9793',
-    agentEmail: 'giancarlo@gprb.cl'
+    description: '• Piso de hormigón reforzado H-30 con sello epóxico\n• Altura al hombro 9 m.t.\n• 3 portones automáticos tipo seccional para camiones\n• 2 andenes de carga con rampa niveladora\n• Oficinas administrativas integradas 120 m²\n• Iluminación LED industrial de alta eficiencia\n• Acceso directo Ruta 68 y Aeropuerto AMB (5 min)\n• Sistema contra incendio NFPA certificado\n• Parque industrial privado con portería 24/7',
+    services: ['Internet', 'Agua', 'Luz', 'Gas', 'AndenCargaComun'],
+    amenities: ['Aire', 'Generador', 'Montacargas'],
+    security: ['CCTV24h', 'CercoElectrico', 'SensorIncendio', 'Alarma'],
+    videoUrl: null
   },
   {
     id: 11,
     title: 'Bodega Refrigerada Quilicura',
     type: 'Bodega',
     status: 'Arriendo',
-    price: 6200000,
+    price: 155,
+    priceUnit: 'UF',
+    gastosComunes: 10,
+    gastosComunesUnit: 'UF',
     location: 'Quilicura, Santiago',
     address: 'Av. El Salto 5380, Quilicura',
     area: 980,
+    areaBodega: 900,
+    areaOficina: 60,
+    areaAltillo: null,
     usableArea: 900,
     bathrooms: 2,
     parking: 6,
+    portones: 2,
+    andenes: 1,
     warehouseType: 'Cerrada',
     privateRooms: 1,
     age: 3,
     height: 7,
     floorSupport: 6,
-    platforms: 'Si',
-    pricePerM2: 6326,
+    pricePerM2: 0.158,
     propertyCode: 'BOD-002',
+    portalCode: null,
     featured: true,
     image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80',
     gallery: [
@@ -75,34 +89,40 @@ const defaultProperties = [
       'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
       'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80'
     ],
-    description: 'Bodega de temperatura controlada con cámara frigorífica de última generación. Equipada con sistema de refrigeración industrial redundante, pisos epóxicos antideslizantes y certificación sanitaria vigente. Perfecta para la industria alimentaria, farmacéutica o de distribución de productos perecibles. Ubicada en parque industrial cerrado con vigilancia 24/7 y fácil acceso a Ruta 5 Norte.',
-    services: ['Agua Potable', 'Luz Trifásica', 'Internet Dedicado', 'Agua Industrial'],
-    amenities: ['Refrigeración Industrial', 'Cámara Frigorífica', 'Aire Acondicionado', 'Generador'],
-    security: ['CCTV 24/7', 'Alarma Central', 'Control Acceso', 'Sistema Incendio'],
-    agentName: 'Giancarlo GPRB',
-    agentPhone: '+56 9 4170 9793',
-    agentEmail: 'giancarlo@gprb.cl'
+    description: '• Cámara frigorífica de última generación con redundancia\n• Temperatura controlada entre -25°C y +10°C\n• Pisos epóxicos antideslizantes certificados HACCP\n• Certificación sanitaria vigente SEREMI\n• Sistema de refrigeración industrial redundante\n• 1 andén de carga refrigerado con cortina de aire\n• Parque industrial privado cerrado con acceso Ruta 5 Norte\n• Vigilancia 24/7 con CCTV y guardia permanente',
+    services: ['Internet', 'Agua', 'Luz', 'AndenCargaComun', 'BanosPublicos'],
+    amenities: ['Aire', 'Generador', 'Bascula'],
+    security: ['CCTV24h', 'CircuitoCerrado', 'RedHumeda', 'SensorIncendio', 'Alarma'],
+    videoUrl: null
   },
   {
     id: 4,
     title: 'Oficina Ejecutiva Providencia',
     type: 'Oficina',
     status: 'Arriendo',
-    price: 1950000,
+    price: 50,
+    priceUnit: 'UF',
+    gastosComunes: 5,
+    gastosComunesUnit: 'UF',
     location: 'Providencia, Santiago',
     address: 'Antonio Bellet 193, Of. 1210',
     area: 145,
+    areaBodega: null,
+    areaOficina: 115,
+    areaAltillo: null,
     usableArea: 130,
     bathrooms: 2,
     parking: 2,
+    portones: null,
+    andenes: null,
     warehouseType: null,
     privateRooms: 4,
     age: 10,
     height: 3,
     floorSupport: 3,
-    platforms: 'No',
-    pricePerM2: 13448,
+    pricePerM2: 0.345,
     propertyCode: 'OFI-003',
+    portalCode: null,
     featured: false,
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
     gallery: [
@@ -111,35 +131,41 @@ const defaultProperties = [
       'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80',
       'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80'
     ],
-    description: 'Espléndida oficina ejecutiva en edificio clase A en el corazón de Providencia. Layout flexible con 4 salas privadas, sala de reuniones equipada, recepción y cocina ejecutiva. Edificio con certificación LEED, estacionamientos propios, gimnasio y casino. A pasos del metro Manuel Montt, rodeado de restaurantes y servicios. Ideal para empresa de servicios profesionales o corporación financiera.',
-    services: ['Internet Fibra 1Gbps', 'Agua', 'Luz', 'Gas', 'Teléfono'],
-    amenities: ['Aire Acondicionado Central', 'Calefacción', 'Sala Reuniones', 'Cocina Ejecutiva'],
-    security: ['Conserjería 24/7', 'CCTV', 'Alarma', 'Control Acceso Biométrico'],
-    agentName: 'Giancarlo GPRB',
-    agentPhone: '+56 9 4170 9793',
-    agentEmail: 'giancarlo@gprb.cl'
+    description: '• Edificio clase A con certificación LEED\n• 4 salas privadas + sala de reuniones equipada\n• Recepción con mesón ejecutivo\n• Cocina ejecutiva y comedor\n• Climatización central con control individual\n• A pasos Metro Manuel Montt (200 m)\n• 2 estacionamientos propios incluidos\n• Gimnasio y casino en el edificio',
+    services: ['Internet', 'Agua', 'Luz', 'Gas', 'Telefonica', 'CasinoAlimentacion', 'BanosPublicos'],
+    amenities: ['Aire', 'Calefaccion'],
+    security: ['CCTV24h', 'CircuitoCerrado', 'Alarma'],
+    videoUrl: null
   },
-  // ── VENTAS ─────────────────────────────────────────────────────────
+  // ── VENTAS (precios en UF) ─────────────────────────────────────────
   {
     id: 1,
     title: 'Terreno Industrial Lampa',
     type: 'Terreno',
     status: 'Venta',
-    price: 480000000,
+    price: 11940,
+    priceUnit: 'UF',
+    gastosComunes: null,
+    gastosComunesUnit: 'UF',
     location: 'Lampa, Región Metropolitana',
     address: 'Ruta 57 Km 28, Parque Industrial Lampa',
     area: 8500,
+    areaBodega: null,
+    areaOficina: null,
+    areaAltillo: null,
     usableArea: 8000,
     bathrooms: 0,
     parking: 20,
+    portones: null,
+    andenes: null,
     warehouseType: 'Abierta',
     privateRooms: 0,
     age: 1,
-    height: 0,
-    floorSupport: 0,
-    platforms: 'Si',
-    pricePerM2: 56470,
+    height: null,
+    floorSupport: null,
+    pricePerM2: 1.4,
     propertyCode: 'TER-004',
+    portalCode: null,
     featured: true,
     image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
     gallery: [
@@ -148,34 +174,40 @@ const defaultProperties = [
       'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
       'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80'
     ],
-    description: 'Gran terreno industrial con uso de suelo I2 en Parque Industrial Lampa, uno de los polos logísticos de mayor crecimiento en Chile. Terreno plano, completamente urbanizado, con acceso directo a Ruta 57 (Colina–Los Andes). Cuenta con factibilidades de agua, luz trifásica y alcantarillado industrial. Ideal para construir planta industrial, centro de distribución o bodega a la medida.',
-    services: ['Luz Trifásica Disponible', 'Agua Disponible', 'Alcantarillado Industrial'],
-    amenities: ['Acceso Camiones Doble Tracción', 'Portería'],
-    security: ['Perímetro Cercado', 'Guardia Acceso'],
-    agentName: 'Giancarlo GPRB',
-    agentPhone: '+56 9 4170 9793',
-    agentEmail: 'giancarlo@gprb.cl'
+    description: '• Uso de suelo I2 (industrial exclusivo)\n• Terreno plano, 100% urbanizado\n• Acceso directo Ruta 57 (Colina–Los Andes)\n• Factibilidad de agua, luz trifásica y alcantarillado industrial\n• Acceso a camiones de doble tracción\n• Parque Industrial Lampa — polo logístico en expansión\n• A 28 km del centro de Santiago\n• Certificado libre de pasivos ambientales',
+    services: ['Luz', 'Agua'],
+    amenities: [],
+    security: ['CercoElectrico'],
+    videoUrl: null
   },
   {
     id: 3,
     title: 'Galpón con Oficinas Maipú',
     type: 'Galpon',
     status: 'Venta',
-    price: 320000000,
+    price: 7960,
+    priceUnit: 'UF',
+    gastosComunes: null,
+    gastosComunesUnit: 'UF',
     location: 'Maipú, Santiago',
     address: 'Av. Pajaritos 7800, Maipú',
     area: 2200,
+    areaBodega: 1900,
+    areaOficina: 300,
+    areaAltillo: null,
     usableArea: 1900,
     bathrooms: 4,
     parking: 15,
+    portones: 3,
+    andenes: 2,
     warehouseType: 'Cerrada',
     privateRooms: 6,
     age: 8,
     height: 10,
     floorSupport: 10,
-    platforms: 'Si',
-    pricePerM2: 145454,
+    pricePerM2: 3.62,
     propertyCode: 'IND-005',
+    portalCode: null,
     featured: true,
     image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80',
     gallery: [
@@ -184,34 +216,40 @@ const defaultProperties = [
       'https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80',
       'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80'
     ],
-    description: 'Imponente galpón industrial en venta en la comuna de Maipú, con acceso privilegiado a Autopista del Sol y Vespucio Sur. Nave principal de 10 metros de altura libre con estructura metálica en excelente estado, 3 portones automáticos tipo seccional para camiones, piso de hormigón H-30 con sellador epóxico. Incluye cuerpo de oficinas de 300 m² con 6 salas, sala de reuniones, baños ejecutivos y casino. Uso I1/I2. Oportunidad para empresa en expansión.',
-    services: ['Luz Trifásica', 'Agua Potable e Industrial', 'Gas Natural', 'Internet Fibra'],
-    amenities: ['Grúa Puente 5 Ton', 'Montacargas', 'Generador 200 KVA', 'Comedor 80 Personas'],
-    security: ['CCTV 64 Cámaras', 'Alarma Perimetral', 'Sistema Incendio NFPA', 'Guardia 24/7'],
-    agentName: 'Giancarlo GPRB',
-    agentPhone: '+56 9 4170 9793',
-    agentEmail: 'giancarlo@gprb.cl'
+    description: '• Nave principal 1.900 m² — altura al hombro 10 m.t.\n• Estructura metálica en excelente estado\n• 3 portones automáticos tipo seccional para camiones\n• 2 andenes de carga con rampa niveladora\n• Piso hormigón H-30 con sellador epóxico\n• Cuerpo de oficinas 300 m² — 6 salas privadas\n• Sala de reuniones, baños ejecutivos y casino\n• Uso I1/I2 — acceso Autopista del Sol y Vespucio Sur',
+    services: ['Luz', 'Agua', 'Gas', 'Internet', 'AndenCargaComun', 'CasinoAlimentacion'],
+    amenities: ['GruaPuente', 'Montacargas', 'Generador'],
+    security: ['CCTV24h', 'CercoElectrico', 'RedHumeda', 'SistemaIncendio', 'Alarma'],
+    videoUrl: null
   },
   {
     id: 5,
     title: 'Local Comercial Santiago Centro',
     type: 'Local Comercial',
     status: 'Venta',
-    price: 95000000,
+    price: 2363,
+    priceUnit: 'UF',
+    gastosComunes: null,
+    gastosComunesUnit: 'UF',
     location: 'Santiago Centro',
     address: 'Morandé 835, Santiago',
     area: 280,
+    areaBodega: null,
+    areaOficina: 240,
+    areaAltillo: null,
     usableArea: 260,
     bathrooms: 2,
     parking: 2,
+    portones: null,
+    andenes: null,
     warehouseType: null,
     privateRooms: 2,
     age: 15,
     height: 4,
     floorSupport: 4,
-    platforms: 'No',
-    pricePerM2: 339285,
+    pricePerM2: 8.44,
     propertyCode: 'LOC-006',
+    portalCode: null,
     featured: false,
     image: 'https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=800&q=80',
     gallery: [
@@ -220,13 +258,11 @@ const defaultProperties = [
       'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80',
       'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80'
     ],
-    description: 'Excelente local comercial de esquina en pleno corazón de Santiago Centro, con altísimo flujo peatonal. Planta libre de 280 m² con techos de 4 metros, vitrinas panorámicas, dos accesos independientes y bodega subterránea de 40 m². Instalaciones eléctricas trifásicas, sistema de climatización central. Uso mixto comercial/oficinas. A metros de la Estación Baquedano y del eje Alameda. Propiedad en excelente estado de conservación.',
-    services: ['Internet Fibra', 'Agua', 'Luz Trifásica', 'Gas', 'Teléfono'],
-    amenities: ['Aire Acondicionado', 'Calefacción Central', 'Bodega', 'Vitrina LED'],
-    security: ['CCTV', 'Alarma Monitoreo', 'Control Acceso', 'Conserjería Edificio'],
-    agentName: 'Giancarlo GPRB',
-    agentPhone: '+56 9 4170 9793',
-    agentEmail: 'giancarlo@gprb.cl'
+    description: '• Local de esquina con altísimo flujo peatonal\n• Planta libre 240 m² con techos de 4 metros\n• Vitrinas panorámicas en dos fachadas\n• Dos accesos independientes\n• Bodega subterránea 40 m²\n• Instalaciones eléctricas trifásicas\n• Climatización central con sistema VRF\n• A metros Metro Baquedano y eje Alameda\n• Excelente estado de conservación',
+    services: ['Internet', 'Agua', 'Luz', 'Gas', 'Telefonica', 'BanosPublicos'],
+    amenities: ['Aire', 'Calefaccion'],
+    security: ['CCTV24h', 'CircuitoCerrado', 'Alarma'],
+    videoUrl: null
   }
 ];
 
@@ -718,7 +754,7 @@ function showPage(page, data) {
 
   if (page === 'home') renderHome();
   if (page === 'listings') renderListings();
-  if (page === 'detail' && data) renderDetail(data);
+  if (page === 'detail' && data) renderDetailAsync(data);
   if (page === 'dashboard') renderDashboard();
 }
 
@@ -846,12 +882,19 @@ function renderListings(filteredProps) {
   document.getElementById('resultsCount').textContent = `${props.length} resultado${props.length !== 1 ? 's' : ''}`;
 }
 
+async function renderDetailAsync(propId) {
+  await fetchUFValue();
+  renderDetail(propId);
+}
+
 function renderDetail(propId) {
   const props = getProperties();
   const prop = props.find(p => p.id === propId);
   if (!prop) return;
 
-  const priceText = `$${prop.price.toLocaleString('es-CL')} CLP${prop.status === 'Arriendo' ? '/mes' : ''}`;
+  const priceParts = buildPriceText(prop);
+  const priceText = priceParts.main;
+  const priceSubText = priceParts.sub;
   const galleryImages = [prop.image, ...(prop.gallery || [])].filter(Boolean);
   const mainImg = galleryImages[0] || '';
   // 5 thumbs visible + 1 counter slot (index 5)
@@ -859,8 +902,29 @@ function renderDetail(propId) {
   const thumbs = Array.from({length: THUMB_COUNT}, (_, i) => galleryImages[i + 1] || mainImg);
   const totalPhotos = galleryImages.length;
   const hiddenCount = totalPhotos - (THUMB_COUNT + 1); // photos beyond what's shown
-  const agentInitial = prop.agentName ? prop.agentName.charAt(0).toUpperCase() : 'G';
   const statusLabel = prop.status === 'Venta' ? 'Venta' : 'Arriendo';
+
+  // Labels de servicios (mapa valor → texto legible)
+  const SERVICE_LABELS = {
+    'Internet': 'Acceso a Internet', 'Agua': 'Agua Corriente', 'Gas': 'Gas Natural',
+    'Luz': 'Luz Eléctrica', 'Telefonica': 'Línea Telefónica',
+    'AndenCargaComun': 'Andén de Carga/Descarga Uso Común',
+    'CasinoAlimentacion': 'Casino de Alimentación',
+    'BanosPublicos': 'Baños de Uso Público'
+  };
+  const SECURITY_LABELS = {
+    'Alarma': 'Alarma', 'CCTV24h': 'CCTV 24 hrs.', 'CircuitoCerrado': 'Circuito Cerrado',
+    'CercoElectrico': 'Cerco Eléctrico Perimetral', 'RedHumeda': 'Red Húmeda',
+    'SensorIncendio': 'Sensor de Incendio Interior Bodega',
+    'SistemaIncendio': 'Sistema Contra Incendio',
+    'Incendio': 'Sistema Contra Incendio', 'Conserjeria': 'Conserjería'
+  };
+  const labelOf = (map, v) => map[v] || v;
+
+  const videoEmbed = getVideoEmbedUrl(prop.videoUrl);
+  const gastosStr = prop.gastosComunes
+    ? `${prop.gastosComunesUnit === 'UF' ? 'UF ' : '$'}${prop.gastosComunes.toLocaleString('es-CL')} ${prop.gastosComunesUnit === 'CLP' ? 'CLP' : ''}`
+    : null;
 
   document.getElementById('propertyDetail').innerHTML = `
     <div class="detail-hero">
@@ -875,6 +939,7 @@ function renderDetail(propId) {
           </div>
           <div class="detail-header-right">
             <div class="detail-price-top">${priceText}</div>
+            ${priceSubText ? `<div class="detail-price-sub">${priceSubText}</div>` : ''}
             <span class="detail-status-badge ${prop.status === 'Venta' ? 'sale' : 'rent'}">${statusLabel}</span>
           </div>
         </div>
@@ -903,29 +968,74 @@ function renderDetail(propId) {
       <div class="container">
         <div class="detail-grid">
           <div class="detail-main">
-            <div class="detail-price-tag">${priceText}</div>
+            <div class="detail-price-tag">
+              ${priceText}
+              ${priceSubText ? `<span class="detail-price-clp">${priceSubText}</span>` : ''}
+            </div>
+            ${gastosStr ? `<div class="detail-gastos">Gastos comunes: <strong>${gastosStr}</strong></div>` : ''}
+
             <div class="detail-features">
-              ${prop.area > 0 ? `<div class="detail-feature"><i class="fas fa-ruler-combined"></i><strong>${prop.area}m²</strong><span>Total</span></div>` : ''}
-              ${prop.usableArea > 0 ? `<div class="detail-feature"><i class="fas fa-square"></i><strong>${prop.usableArea}m²</strong><span>Util</span></div>` : ''}
-              ${prop.parking > 0 ? `<div class="detail-feature"><i class="fas fa-car"></i><strong>${prop.parking}</strong><span>Estacionamientos</span></div>` : ''}
-              ${prop.bathrooms > 0 ? `<div class="detail-feature"><i class="fas fa-bath"></i><strong>${prop.bathrooms}</strong><span>Banos</span></div>` : ''}
+              ${prop.areaBodega > 0 ? `<div class="detail-feature"><i class="fas fa-warehouse"></i><strong>${prop.areaBodega.toLocaleString('es-CL')}m²</strong><span>Bodega</span></div>` : ''}
+              ${prop.areaOficina > 0 ? `<div class="detail-feature"><i class="fas fa-briefcase"></i><strong>${prop.areaOficina.toLocaleString('es-CL')}m²</strong><span>Oficina</span></div>` : ''}
+              ${prop.areaAltillo > 0 ? `<div class="detail-feature"><i class="fas fa-layer-group"></i><strong>${prop.areaAltillo.toLocaleString('es-CL')}m²</strong><span>Altillo</span></div>` : ''}
+              ${prop.area > 0 ? `<div class="detail-feature"><i class="fas fa-ruler-combined"></i><strong>${prop.area.toLocaleString('es-CL')}m²</strong><span>Total</span></div>` : ''}
+              ${prop.parking > 0 ? `<div class="detail-feature"><i class="fas fa-car"></i><strong>${prop.parking}</strong><span>Estac.</span></div>` : ''}
+              ${prop.bathrooms > 0 ? `<div class="detail-feature"><i class="fas fa-bath"></i><strong>${prop.bathrooms}</strong><span>Baños</span></div>` : ''}
+              ${prop.portones > 0 ? `<div class="detail-feature"><i class="fas fa-door-open"></i><strong>${prop.portones}</strong><span>Portones</span></div>` : ''}
+              ${prop.andenes > 0 ? `<div class="detail-feature"><i class="fas fa-truck-loading"></i><strong>${prop.andenes}</strong><span>Andenes</span></div>` : ''}
             </div>
+
+            <div class="detail-section detail-specs-table">
+              <h2>Ficha Técnica</h2>
+              <div class="specs-grid">
+                ${prop.type ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-tag"></i> Tipo:</span><span class="spec-val">${escapeHtml(prop.type)}</span></div>` : ''}
+                ${prop.warehouseType ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-warehouse"></i> Tipo bodega:</span><span class="spec-val">${escapeHtml(prop.warehouseType)}</span></div>` : ''}
+                ${prop.height > 0 ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-arrows-alt-v"></i> Altura al hombro:</span><span class="spec-val">${prop.height} m.t.</span></div>` : ''}
+                ${prop.floorSupport > 0 ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-layer-group"></i> Soporte piso:</span><span class="spec-val">${prop.floorSupport} t/m²</span></div>` : ''}
+                ${prop.age > 0 ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-calendar"></i> Antigüedad:</span><span class="spec-val">${prop.age} año${prop.age !== 1 ? 's' : ''}</span></div>` : ''}
+                ${prop.privateRooms > 0 ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-door-closed"></i> Privados:</span><span class="spec-val">${prop.privateRooms}</span></div>` : ''}
+                ${prop.pricePerM2 > 0 ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-calculator"></i> Precio/m²:</span><span class="spec-val">UF ${formatUF(prop.pricePerM2)}</span></div>` : ''}
+                ${prop.propertyCode ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-hashtag"></i> Cód. propiedad:</span><span class="spec-val">${escapeHtml(prop.propertyCode)}</span></div>` : ''}
+                ${prop.portalCode ? `<div class="spec-row"><span class="spec-label"><i class="fas fa-globe"></i> Cód. portal:</span><span class="spec-val">${escapeHtml(prop.portalCode)}</span></div>` : ''}
+              </div>
+            </div>
+
             <div class="detail-section">
-              <h2>Descripcion</h2>
-              <p>${escapeHtml(prop.description)}</p>
+              <h2>Descripción</h2>
+              <div class="detail-description">${renderDescription(prop.description)}</div>
             </div>
+
             ${prop.services && prop.services.length > 0 ? `
             <div class="detail-section">
               <h2>Servicios</h2>
               <div class="detail-amenities">
-                ${prop.services.map(s => `<div class="detail-amenity"><i class="fas fa-check-circle"></i> ${escapeHtml(s)}</div>`).join('')}
+                ${prop.services.map(s => `<div class="detail-amenity"><i class="fas fa-check-circle"></i> ${escapeHtml(labelOf(SERVICE_LABELS, s))}</div>`).join('')}
               </div>
             </div>` : ''}
+
             ${prop.amenities && prop.amenities.length > 0 ? `
             <div class="detail-section">
-              <h2>Comodidades</h2>
+              <h2>Comodidades y Equipamiento</h2>
               <div class="detail-amenities">
                 ${prop.amenities.map(a => `<div class="detail-amenity"><i class="fas fa-check-circle"></i> ${escapeHtml(a)}</div>`).join('')}
+              </div>
+            </div>` : ''}
+
+            ${prop.security && prop.security.length > 0 ? `
+            <div class="detail-section">
+              <h2>Seguridad</h2>
+              <div class="detail-amenities">
+                ${prop.security.map(s => `<div class="detail-amenity"><i class="fas fa-shield-alt"></i> ${escapeHtml(labelOf(SECURITY_LABELS, s))}</div>`).join('')}
+              </div>
+            </div>` : ''}
+
+            ${videoEmbed ? `
+            <div class="detail-section">
+              <h2><i class="fas fa-video"></i> Video Corporativo</h2>
+              <div class="detail-video-wrap">
+                <iframe src="${escapeAttr(videoEmbed)}" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen loading="lazy" title="Video propiedad"></iframe>
               </div>
             </div>` : ''}
 
@@ -934,8 +1044,8 @@ function renderDetail(propId) {
               <h2><i class="fas fa-map-marker-alt"></i> Ubicación</h2>
               <div class="detail-map-address">
                 <i class="fas fa-building"></i>
-                <span>${escapeHtml(prop.address || prop.location)}, ${escapeHtml(prop.location || '')}</span>
-                <a href="https://www.google.com/maps/search/${encodeURIComponent((prop.address || '') + ' ' + (prop.location || ''))}" target="_blank" rel="noopener" class="btn-map-ext">
+                <span>${escapeHtml(prop.address || prop.location)}${prop.address && prop.location ? ', ' + escapeHtml(prop.location) : ''}</span>
+                <a href="https://www.google.com/maps/search/${encodeURIComponent((prop.address || '') + ' ' + (prop.location || '') + ' Chile')}" target="_blank" rel="noopener" class="btn-map-ext">
                   <i class="fas fa-external-link-alt"></i> Ver en Google Maps
                 </a>
               </div>
@@ -948,37 +1058,21 @@ function renderDetail(propId) {
               </div>
             </div>` : ''}
           </div>
+
           <div class="detail-sidebar">
-            ${prop.agentName ? `
             <div class="sidebar-card">
-              <h3>Agente</h3>
-              <div class="agent-info">
-                <div class="agent-avatar">${agentInitial}</div>
-                <h4>${escapeHtml(prop.agentName)}</h4>
-                ${prop.agentPhone ? `<div class="agent-detail"><i class="fas fa-phone"></i> <a href="tel:${escapeAttr(prop.agentPhone)}">${escapeHtml(prop.agentPhone)}</a></div>` : ''}
-                ${prop.agentEmail ? `<div class="agent-detail"><i class="fas fa-envelope"></i> <a href="mailto:${escapeAttr(prop.agentEmail)}">${escapeHtml(prop.agentEmail)}</a></div>` : ''}
-              </div>
-              ${prop.agentPhone ? `
-              <a href="https://wa.me/${cleanPhone(prop.agentPhone)}?text=${encodeURIComponent('Hola, me interesa la propiedad: ' + prop.title + (prop.propertyCode ? ' (Código: ' + prop.propertyCode + ')' : '') + '. ¿Podría darme más información?')}"
-                 target="_blank" rel="noopener" class="btn-whatsapp-detail">
-                <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
-              </a>` : ''}
-            </div>` : ''}
-            <div class="sidebar-card">
-              <h3>Contactar</h3>
+              <h3>Consultar</h3>
               <form class="contact-form" onsubmit="handleContact(event)">
                 <input type="text" placeholder="Tu nombre" required>
                 <input type="email" placeholder="Tu email" required>
-                <input type="tel" placeholder="Tu telefono">
+                <input type="tel" placeholder="Tu teléfono">
                 <textarea rows="4" placeholder="Consulta sobre: ${escapeAttr(prop.title)}..."></textarea>
                 <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
                   <i class="fas fa-paper-plane"></i> Enviar Consulta
                 </button>
               </form>
-              <div class="sidebar-wa-divider">
-                <span>o contáctanos directo</span>
-              </div>
-              <a href="https://wa.me/${cleanPhone(prop.agentPhone || '56941709793')}?text=${encodeURIComponent('Hola, vi la propiedad «' + prop.title + '» en GPRB y me gustaría más información.')}"
+              <div class="sidebar-wa-divider"><span>o contáctanos directo</span></div>
+              <a href="https://wa.me/56941709793?text=${encodeURIComponent('Hola GPRB, estoy interesado en la propiedad «' + prop.title + '»' + (prop.propertyCode ? ' (Código: ' + prop.propertyCode + ')' : '') + '. ¿Podría entregarme más información?')}"
                  target="_blank" rel="noopener" class="btn-whatsapp-alt">
                 <i class="fab fa-whatsapp"></i> Escribir por WhatsApp
               </a>
@@ -986,8 +1080,11 @@ function renderDetail(propId) {
             <div class="sidebar-card">
               <h3>Detalles</h3>
               <div class="agent-detail"><i class="fas fa-tag"></i> <strong>Tipo:</strong>&nbsp;${escapeHtml(prop.type)}</div>
-              <div class="agent-detail"><i class="fas fa-handshake"></i> <strong>Estado:</strong>&nbsp;${prop.status}</div>
-              <div class="agent-detail"><i class="fas fa-hashtag"></i> <strong>Codigo:</strong>&nbsp;${prop.propertyCode}</div>
+              <div class="agent-detail"><i class="fas fa-handshake"></i> <strong>Operación:</strong>&nbsp;${prop.status}</div>
+              ${prop.propertyCode ? `<div class="agent-detail"><i class="fas fa-hashtag"></i> <strong>Código:</strong>&nbsp;${escapeHtml(prop.propertyCode)}</div>` : ''}
+              ${prop.portalCode ? `<div class="agent-detail"><i class="fas fa-globe"></i> <strong>Portal:</strong>&nbsp;${escapeHtml(prop.portalCode)}</div>` : ''}
+              ${prop.area > 0 ? `<div class="agent-detail"><i class="fas fa-ruler-combined"></i> <strong>Superficie:</strong>&nbsp;${prop.area.toLocaleString('es-CL')} m²</div>` : ''}
+              ${gastosStr ? `<div class="agent-detail"><i class="fas fa-receipt"></i> <strong>Gastos com.:</strong>&nbsp;${gastosStr}</div>` : ''}
             </div>
           </div>
         </div>
@@ -1270,30 +1367,37 @@ function saveProperty(e) {
     title: document.getElementById('fTitle').value.trim(),
     type: document.getElementById('fType').value,
     status: document.getElementById('fStatus').value,
-    price: parseFloat(document.getElementById('fPrice').value),
+    price: parseDecimalInput(document.getElementById('fPrice').value),
+    priceUnit: document.getElementById('fPriceUnit')?.value || 'UF',
+    gastosComunes: parseDecimalInput(document.getElementById('fGastos')?.value) || null,
+    gastosComunesUnit: document.getElementById('fGastosUnit')?.value || 'UF',
     location: document.getElementById('fLocation').value.trim(),
     address: document.getElementById('fAddress').value.trim(),
-    area: parseInt(document.getElementById('fArea').value) || 0,
-    usableArea: parseInt(document.getElementById('fUsableArea').value) || 0,
+    area: parseDecimalInput(document.getElementById('fArea').value) || 0,
+    areaBodega: parseDecimalInput(document.getElementById('fAreaBodega')?.value) || null,
+    areaOficina: parseDecimalInput(document.getElementById('fAreaOficina')?.value) || null,
+    areaAltillo: parseDecimalInput(document.getElementById('fAreaAltillo')?.value) || null,
+    usableArea: parseDecimalInput(document.getElementById('fArea').value) || 0, // usar área total como usable si no hay otro
     bathrooms: parseInt(document.getElementById('fBathrooms').value) || 0,
     parking: parseInt(document.getElementById('fParking').value) || 0,
+    portones: parseInt(document.getElementById('fPortones')?.value) || null,
+    andenes: parseInt(document.getElementById('fAndenes')?.value) || null,
     warehouseType: document.getElementById('fWarehouseType').value || null,
     privateRooms: parseInt(document.getElementById('fPrivateRooms').value) || 0,
     age: parseInt(document.getElementById('fAge').value) || null,
-    height: parseFloat(document.getElementById('fHeight').value) || null,
-    floorSupport: parseFloat(document.getElementById('fFloorSupport').value) || null,
-    platforms: document.getElementById('fPlatforms').value || 'No',
-    pricePerM2: parseFloat(document.getElementById('fPricePerM2').value) || 0,
+    height: parseDecimalInput(document.getElementById('fHeight').value) || null,
+    floorSupport: parseDecimalInput(document.getElementById('fFloorSupport').value) || null,
+    platforms: null, // eliminado: ahora se usa portones/andenes
+    pricePerM2: parseDecimalInput(document.getElementById('fPricePerM2').value) || null,
     propertyCode: document.getElementById('fPropertyCode').value.trim(),
+    portalCode: document.getElementById('fPortalCode')?.value.trim() || null,
     image: '', // se llena tras subir
     gallery: [], // se llena tras subir
     description: document.getElementById('fDesc').value.trim(),
+    videoUrl: document.getElementById('fVideoUrl')?.value.trim() || null,
     services: services,
     amenities: amenities,
-    security: security,
-    agentName: document.getElementById('fAgent').value.trim(),
-    agentPhone: document.getElementById('fPhone').value.trim(),
-    agentEmail: document.getElementById('fEmail').value.trim()
+    security: security
   };
 
   (async () => {
@@ -1354,33 +1458,44 @@ function editProperty(id) {
   document.getElementById('editId').value = prop.id;
   document.getElementById('fTitle').value = prop.title || '';
   document.getElementById('fType').value = prop.type || '';
-  document.getElementById('fStatus').value = prop.status || 'Venta';
-  document.getElementById('fPrice').value = prop.price || '';
+  document.getElementById('fStatus').value = prop.status || 'Arriendo';
+  // Precio con soporte UF/CLP y coma
+  if (document.getElementById('fPriceUnit')) document.getElementById('fPriceUnit').value = prop.priceUnit || 'UF';
+  document.getElementById('fPrice').value = prop.price != null ? String(prop.price).replace('.', ',') : '';
+  // Gastos comunes
+  if (document.getElementById('fGastosUnit')) document.getElementById('fGastosUnit').value = prop.gastosComunesUnit || 'UF';
+  if (document.getElementById('fGastos')) document.getElementById('fGastos').value = prop.gastosComunes != null ? String(prop.gastosComunes).replace('.', ',') : '';
   document.getElementById('fLocation').value = prop.location || '';
   document.getElementById('fAddress').value = prop.address || '';
-  document.getElementById('fArea').value = prop.area || '';
-  document.getElementById('fUsableArea').value = prop.usableArea || '';
+  // m² con coma
+  if (document.getElementById('fAreaBodega')) document.getElementById('fAreaBodega').value = prop.areaBodega != null ? String(prop.areaBodega).replace('.', ',') : '';
+  if (document.getElementById('fAreaOficina')) document.getElementById('fAreaOficina').value = prop.areaOficina != null ? String(prop.areaOficina).replace('.', ',') : '';
+  if (document.getElementById('fAreaAltillo')) document.getElementById('fAreaAltillo').value = prop.areaAltillo != null ? String(prop.areaAltillo).replace('.', ',') : '';
+  document.getElementById('fArea').value = prop.area != null ? String(prop.area).replace('.', ',') : '';
   document.getElementById('fBathrooms').value = prop.bathrooms || '';
   document.getElementById('fParking').value = prop.parking || '';
+  if (document.getElementById('fPortones')) document.getElementById('fPortones').value = prop.portones || '';
+  if (document.getElementById('fAndenes')) document.getElementById('fAndenes').value = prop.andenes || '';
   document.getElementById('fWarehouseType').value = prop.warehouseType || '';
   document.getElementById('fPrivateRooms').value = prop.privateRooms || '';
   document.getElementById('fAge').value = prop.age || '';
-  document.getElementById('fHeight').value = prop.height || '';
-  document.getElementById('fFloorSupport').value = prop.floorSupport || '';
-  document.getElementById('fPlatforms').value = prop.platforms || '';
-  document.getElementById('fPricePerM2').value = prop.pricePerM2 || '';
+  document.getElementById('fHeight').value = prop.height != null ? String(prop.height).replace('.', ',') : '';
+  document.getElementById('fFloorSupport').value = prop.floorSupport != null ? String(prop.floorSupport).replace('.', ',') : '';
+  document.getElementById('fPricePerM2').value = prop.pricePerM2 != null ? String(prop.pricePerM2).replace('.', ',') : '';
   document.getElementById('fPropertyCode').value = prop.propertyCode || '';
+  if (document.getElementById('fPortalCode')) document.getElementById('fPortalCode').value = prop.portalCode || '';
   // Imagen principal y galería → cargar previews
   setMainImageFromUrl(prop.image || '');
   setGalleryFromUrls(prop.gallery || []);
   document.getElementById('fDesc').value = prop.description || '';
-  document.getElementById('fAgent').value = prop.agentName || '';
-  document.getElementById('fPhone').value = prop.agentPhone || '';
-  document.getElementById('fEmail').value = prop.agentEmail || '';
+  if (document.getElementById('fVideoUrl')) document.getElementById('fVideoUrl').value = prop.videoUrl || '';
 
   document.querySelectorAll('input[name="services"]').forEach(cb => cb.checked = (prop.services || []).includes(cb.value));
   document.querySelectorAll('input[name="amenities"]').forEach(cb => cb.checked = (prop.amenities || []).includes(cb.value));
   document.querySelectorAll('input[name="security"]').forEach(cb => cb.checked = (prop.security || []).includes(cb.value));
+  updatePriceLabel();
+  updateUFConversion();
+  updateGastosConversion();
 
   document.getElementById('formSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
   switchDashTab('add');
@@ -1394,6 +1509,12 @@ function resetForm() {
   document.getElementById('formSubmitBtn').innerHTML = '<i class="fas fa-plus-circle"></i> Publicar';
   form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
   resetImageUploaders();
+  // Limpiar hints de conversión
+  const h1 = document.getElementById('ufConversionHint');
+  const h2 = document.getElementById('gastosConversionHint');
+  if (h1) { h1.textContent = ''; h1.style.display = 'none'; }
+  if (h2) { h2.textContent = ''; h2.style.display = 'none'; }
+  updatePriceLabel();
 }
 
 // ===================== DELETE =====================
@@ -1739,6 +1860,140 @@ function initTheme() {
 function toggleTheme() { /* modo oscuro eliminado */ }
 function applyTheme() { document.body.classList.add('light-mode'); }
 
+// ===================== UF CONVERSION =====================
+let _ufValue = null; // valor UF del día, cargado asincrónicamente
+
+async function fetchUFValue() {
+  if (_ufValue) return _ufValue;
+  try {
+    const res = await fetch('https://mindicador.cl/api/uf');
+    const data = await res.json();
+    _ufValue = data.serie?.[0]?.valor || null;
+  } catch (e) {
+    console.warn('No se pudo obtener UF:', e);
+    _ufValue = null;
+  }
+  return _ufValue;
+}
+
+function formatUF(uf) {
+  if (uf == null) return '';
+  // Acepta coma o punto como separador decimal
+  const num = parseFloat(String(uf).replace(',', '.'));
+  return isNaN(num) ? '' : num.toLocaleString('es-CL', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+function parseDecimalInput(val) {
+  // Permite coma o punto como separador decimal
+  if (val == null || val === '') return null;
+  return parseFloat(String(val).replace(',', '.')) || null;
+}
+
+function ufToCLP(ufAmount) {
+  if (!_ufValue || !ufAmount) return null;
+  return Math.round(ufAmount * _ufValue);
+}
+
+function formatCLPCompact(clp) {
+  if (clp == null) return '';
+  if (clp >= 1000000) return `$${(clp / 1000000).toFixed(1).replace('.', ',')} M`;
+  if (clp >= 1000) return `$${(clp / 1000).toFixed(0)} K`;
+  return `$${clp.toLocaleString('es-CL')}`;
+}
+
+function buildPriceText(prop) {
+  const isRent = prop.status === 'Arriendo';
+  const unit = prop.priceUnit || (isRent ? 'UF' : 'CLP');
+  const suffix = isRent ? '/mes' : '';
+  if (unit === 'UF') {
+    const ufStr = formatUF(prop.price);
+    const clp = ufToCLP(prop.price);
+    const clpStr = clp ? ` ≈ ${clp.toLocaleString('es-CL')} CLP` : '';
+    return { main: `UF ${ufStr}${suffix}`, sub: clpStr };
+  }
+  return { main: `$${prop.price.toLocaleString('es-CL')} CLP${suffix}`, sub: '' };
+}
+
+async function updateUFConversion() {
+  const uf = await fetchUFValue();
+  const hint = document.getElementById('ufConversionHint');
+  if (!hint) return;
+  const unit = document.getElementById('fPriceUnit')?.value;
+  const raw = document.getElementById('fPrice')?.value;
+  const val = parseDecimalInput(raw);
+  if (unit === 'UF' && val && uf) {
+    const clp = Math.round(val * uf);
+    hint.textContent = `≈ $${clp.toLocaleString('es-CL')} CLP (UF ${uf.toLocaleString('es-CL')} hoy)`;
+    hint.style.display = 'block';
+  } else {
+    hint.textContent = '';
+    hint.style.display = 'none';
+  }
+}
+
+async function updateGastosConversion() {
+  const uf = await fetchUFValue();
+  const hint = document.getElementById('gastosConversionHint');
+  if (!hint) return;
+  const unit = document.getElementById('fGastosUnit')?.value;
+  const raw = document.getElementById('fGastos')?.value;
+  const val = parseDecimalInput(raw);
+  if (unit === 'UF' && val && uf) {
+    const clp = Math.round(val * uf);
+    hint.textContent = `≈ $${clp.toLocaleString('es-CL')} CLP`;
+    hint.style.display = 'block';
+  } else {
+    hint.textContent = '';
+    hint.style.display = 'none';
+  }
+}
+
+function updatePriceLabel() {
+  const status = document.getElementById('fStatus')?.value;
+  const unit = document.getElementById('fPriceUnit')?.value || 'UF';
+  const label = document.getElementById('fPriceLabel');
+  if (!label) return;
+  const suffix = status === 'Arriendo' ? '/mes' : '';
+  label.textContent = `Precio (${unit}${suffix}) *`;
+}
+
+function getVideoEmbedUrl(url) {
+  if (!url) return null;
+  // YouTube: watch?v= or youtu.be/
+  let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (match) return `https://www.youtube.com/embed/${match[1]}`;
+  // Vimeo: vimeo.com/XXXXXXX
+  match = url.match(/vimeo\.com\/(\d+)/);
+  if (match) return `https://player.vimeo.com/video/${match[1]}`;
+  return null;
+}
+
+function renderDescription(text) {
+  if (!text) return '';
+  // Convertir líneas que empiezan con • o - en <li>
+  const lines = text.split('\n');
+  const items = lines.filter(l => /^\s*[•\-\*]\s+/.test(l));
+  if (items.length === 0) {
+    // Párrafo simple, escapar HTML
+    return `<p>${escapeHtml(text).replace(/\n/g, '<br>')}</p>`;
+  }
+  // Mezcla de texto y lista
+  let html = '';
+  let inList = false;
+  for (const line of lines) {
+    const isBullet = /^\s*[•\-\*]\s+/.test(line);
+    if (isBullet) {
+      if (!inList) { html += '<ul class="desc-list">'; inList = true; }
+      html += `<li>${escapeHtml(line.replace(/^\s*[•\-\*]\s+/, ''))}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      if (line.trim()) html += `<p>${escapeHtml(line)}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+
 // ===================== UTILITY: CLEAN PHONE =====================
 function cleanPhone(phone) {
   if (!phone) return '56941709793';
@@ -1770,6 +2025,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   updateAuthUI();
   initBackToTop();
+  updatePriceLabel();
+
+  // Pre-cargar valor UF del día (no bloquea)
+  fetchUFValue();
 
   // 2. Render inmediato con datos por defecto para no bloquear UI
   initSlider();

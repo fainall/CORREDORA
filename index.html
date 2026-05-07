@@ -93,11 +93,15 @@
     <div class="hero-simple" id="heroSimple" role="region" aria-label="Portada GPRB">
       <!-- Hidden slider containers (keep for dashboard editor) -->
       <div id="sliderSlidesContainer" style="display:none;"></div>
-      <div id="sliderDots" style="display:none;"></div>
 
       <!-- Background -->
       <div class="hero-bg" id="heroBg" style="background-image:url('https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&q=85')"></div>
       <div class="hero-overlay"></div>
+
+      <!-- Slider navigation -->
+      <button class="hero-slider-prev" onclick="changeSlide(-1)" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+      <button class="hero-slider-next" onclick="changeSlide(1)" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+      <div class="hero-slider-dots" id="sliderDots"></div>
 
       <!-- Two-column layout -->
       <div class="container hero-simple-inner">
@@ -563,36 +567,55 @@
               <div class="form-grid">
                 <div class="form-group full-width">
                   <label>Titulo *</label>
-                  <input type="text" id="fTitle" required placeholder="Ej: Bodega Industrial en Providencia">
+                  <input type="text" id="fTitle" required placeholder="Ej: Bodega Industrial en Pudahuel">
                 </div>
                 <div class="form-group">
                   <label>Categoria *</label>
                   <select id="fType" required>
                     <option value="">Seleccionar...</option>
-                    <option value="Departamento">Departamento</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Oficina">Oficina</option>
                     <option value="Bodega">Bodega</option>
+                    <option value="Galpon">Galpón</option>
+                    <option value="Oficina">Oficina</option>
                     <option value="Industrial">Industrial</option>
-                    <option value="Local">Local</option>
-                    <option value="Parcela">Parcela</option>
+                    <option value="Local Comercial">Local Comercial</option>
                     <option value="Terreno">Terreno</option>
+                    <option value="Parcela">Parcela</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label>Operacion *</label>
-                  <select id="fStatus" required>
-                    <option value="Venta">Venta</option>
+                  <select id="fStatus" required onchange="updatePriceLabel()">
                     <option value="Arriendo">Arriendo</option>
+                    <option value="Venta">Venta</option>
                   </select>
                 </div>
+                <!-- Precio -->
                 <div class="form-group">
-                  <label>Precio (CLP) *</label>
-                  <input type="number" id="fPrice" required min="0" placeholder="50000000">
+                  <label id="fPriceLabel">Precio (UF/mes) *</label>
+                  <div class="price-input-wrap">
+                    <select id="fPriceUnit" class="price-unit-select" onchange="updatePriceLabel(); updateUFConversion();">
+                      <option value="UF">UF</option>
+                      <option value="CLP">CLP $</option>
+                    </select>
+                    <input type="text" id="fPrice" required placeholder="Ej: 120,5" oninput="updateUFConversion()" inputmode="decimal">
+                  </div>
+                  <div class="uf-conversion-hint" id="ufConversionHint"></div>
+                </div>
+                <!-- Gastos Comunes -->
+                <div class="form-group">
+                  <label>Gastos Comunes</label>
+                  <div class="price-input-wrap">
+                    <select id="fGastosUnit" class="price-unit-select" onchange="updateGastosConversion()">
+                      <option value="UF">UF</option>
+                      <option value="CLP">CLP $</option>
+                    </select>
+                    <input type="text" id="fGastos" placeholder="Ej: 15" oninput="updateGastosConversion()" inputmode="decimal">
+                  </div>
+                  <div class="uf-conversion-hint" id="gastosConversionHint"></div>
                 </div>
                 <div class="form-group">
                   <label>Ubicacion *</label>
-                  <input type="text" id="fLocation" required placeholder="Ej: Providencia, Santiago">
+                  <input type="text" id="fLocation" required placeholder="Ej: Pudahuel, Santiago">
                 </div>
                 <div class="form-group">
                   <label>Direccion</label>
@@ -604,21 +627,38 @@
             <div class="form-section">
               <h3><i class="fas fa-ruler-combined"></i> Caracteristicas Principales</h3>
               <div class="form-grid">
+                <!-- m² en orden solicitado -->
+                <div class="form-group">
+                  <label>m² Bodega</label>
+                  <input type="text" id="fAreaBodega" placeholder="Ej: 850,5" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                  <label>m² Oficina</label>
+                  <input type="text" id="fAreaOficina" placeholder="Ej: 120" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                  <label>m² Altillo</label>
+                  <input type="text" id="fAreaAltillo" placeholder="Ej: 60" inputmode="decimal">
+                </div>
                 <div class="form-group">
                   <label>Superficie Total (m²) *</label>
-                  <input type="number" id="fArea" required min="0" placeholder="500">
+                  <input type="text" id="fArea" required placeholder="Ej: 1.030,5" inputmode="decimal">
                 </div>
                 <div class="form-group">
-                  <label>Superficie Util (m²) *</label>
-                  <input type="number" id="fUsableArea" required min="0" placeholder="450">
-                </div>
-                <div class="form-group">
-                  <label>Banos *</label>
+                  <label>Baños *</label>
                   <input type="number" id="fBathrooms" required min="0" placeholder="2">
                 </div>
                 <div class="form-group">
                   <label>Estacionamientos *</label>
                   <input type="number" id="fParking" required min="0" placeholder="4">
+                </div>
+                <div class="form-group">
+                  <label>Portones a Piso (cantidad)</label>
+                  <input type="number" id="fPortones" min="0" placeholder="2">
+                </div>
+                <div class="form-group">
+                  <label>Andenes (cantidad)</label>
+                  <input type="number" id="fAndenes" min="0" placeholder="1">
                 </div>
                 <div class="form-group">
                   <label>Tipo de Bodega</label>
@@ -634,28 +674,28 @@
                   <input type="number" id="fPrivateRooms" min="0" placeholder="0">
                 </div>
                 <div class="form-group">
-                  <label>Antiguedad (anos)</label>
+                  <label>Antigüedad (años)</label>
                   <input type="number" id="fAge" min="0" placeholder="10">
                 </div>
                 <div class="form-group">
-                  <label>Altura (m)</label>
-                  <input type="number" id="fHeight" step="0.1" placeholder="5">
+                  <label>Altura al Hombro (m.t.)</label>
+                  <input type="text" id="fHeight" placeholder="Ej: 8,5" inputmode="decimal">
                 </div>
                 <div class="form-group">
                   <label>Soporte de Piso (t/m²)</label>
-                  <input type="number" id="fFloorSupport" step="0.1" placeholder="5">
+                  <input type="text" id="fFloorSupport" placeholder="Ej: 5" inputmode="decimal">
                 </div>
                 <div class="form-group">
-                  <label>Remolques de Plataforma</label>
-                  <input type="text" id="fPlatforms" placeholder="Si/No">
+                  <label>Precio por m² (UF)</label>
+                  <input type="text" id="fPricePerM2" placeholder="Ej: 0,12" inputmode="decimal">
                 </div>
                 <div class="form-group">
-                  <label>Precio por m²</label>
-                  <input type="number" id="fPricePerM2" step="1000" placeholder="100000">
-                </div>
-                <div class="form-group">
-                  <label>Codigo de Propiedad</label>
+                  <label>Código de Propiedad</label>
                   <input type="text" id="fPropertyCode" placeholder="CODE-001">
+                </div>
+                <div class="form-group">
+                  <label>Código Portal Inmobiliario</label>
+                  <input type="text" id="fPortalCode" placeholder="Portal-XXXX">
                 </div>
               </div>
             </div>
@@ -717,7 +757,17 @@
               <h3><i class="fas fa-align-left"></i> Descripcion</h3>
               <div class="form-group full-width">
                 <label>Descripcion *</label>
-                <textarea id="fDesc" required rows="5" placeholder="Detalla las principales caracteristicas..."></textarea>
+                <textarea id="fDesc" required rows="7" placeholder="Escribe una descripción detallada. Puedes usar viñetas comenzando cada línea con • o - para listar características (Ej: • Piso de hormigón H-30&#10;• Acceso camiones doble tracción)"></textarea>
+                <small class="form-hint">Consejo: comienza cada característica con <strong>•</strong> o <strong>-</strong> para mostrarlas como lista al visualizar.</small>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3><i class="fas fa-video"></i> Video Corporativo</h3>
+              <div class="form-group full-width">
+                <label>URL Video (YouTube / Vimeo)</label>
+                <input type="url" id="fVideoUrl" placeholder="Ej: https://www.youtube.com/watch?v=XXXXXXXXX">
+                <small class="form-hint">Pega el link de YouTube o Vimeo. Se mostrará embebido en la publicación.</small>
               </div>
             </div>
 
@@ -727,8 +777,11 @@
                 <label class="checkbox-label"><input type="checkbox" name="services" value="Internet"> <span>Acceso a Internet</span></label>
                 <label class="checkbox-label"><input type="checkbox" name="services" value="Agua"> <span>Agua Corriente</span></label>
                 <label class="checkbox-label"><input type="checkbox" name="services" value="Gas"> <span>Gas Natural</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="services" value="Luz"> <span>Luz Electrica</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="services" value="Telefonica"> <span>Linea Telefonica</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Luz"> <span>Luz Eléctrica</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="Telefonica"> <span>Línea Telefónica</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="AndenCargaComun"> <span>Andén de Carga/Descarga Uso Común</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="CasinoAlimentacion"> <span>Casino de Alimentación</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="services" value="BanosPublicos"> <span>Baños de Uso Público</span></label>
               </div>
             </div>
 
@@ -736,10 +789,12 @@
               <h3><i class="fas fa-cogs"></i> Comodidades y Equipamiento</h3>
               <div class="amenities-grid">
                 <label class="checkbox-label"><input type="checkbox" name="amenities" value="Aire"> <span>Aire Acondicionado</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Bascula"> <span>Bascula</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Calefaccion"> <span>Calefaccion</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Generador"> <span>Generador Electrico</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Ventilacion"> <span>Sistema de Ventilacion</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Bascula"> <span>Báscula</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Calefaccion"> <span>Calefacción</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Generador"> <span>Generador Eléctrico</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Ventilacion"> <span>Sistema de Ventilación</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="Montacargas"> <span>Montacargas</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="amenities" value="GruaPuente"> <span>Grúa Puente</span></label>
               </div>
             </div>
 
@@ -747,26 +802,12 @@
               <h3><i class="fas fa-lock"></i> Seguridad</h3>
               <div class="amenities-grid">
                 <label class="checkbox-label"><input type="checkbox" name="security" value="Alarma"> <span>Alarma</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="security" value="Incendio"> <span>Sistema Contra Incendio</span></label>
-                <label class="checkbox-label"><input type="checkbox" name="security" value="Conserjeria"> <span>Conserjeria</span></label>
-              </div>
-            </div>
-
-            <div class="form-section">
-              <h3><i class="fas fa-user"></i> Contacto</h3>
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Nombre Agente</label>
-                  <input type="text" id="fAgent" placeholder="Nombre completo">
-                </div>
-                <div class="form-group">
-                  <label>Telefono</label>
-                  <input type="tel" id="fPhone" placeholder="+56 9 ...">
-                </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" id="fEmail" placeholder="correo@ejemplo.com">
-                </div>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="CCTV24h"> <span>CCTV 24 hrs.</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="CircuitoCerrado"> <span>Circuito Cerrado</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="CercoElectrico"> <span>Cerco Eléctrico Perimetral</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="RedHumeda"> <span>Red Húmeda</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="SensorIncendio"> <span>Sensor de Incendio Interior Bodega</span></label>
+                <label class="checkbox-label"><input type="checkbox" name="security" value="SistemaIncendio"> <span>Sistema Contra Incendio</span></label>
               </div>
             </div>
 
